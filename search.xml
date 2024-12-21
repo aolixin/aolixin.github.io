@@ -1,257 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello This is aolixin</title>
-    <url>/2024/12/17/hello-world/</url>
-    <content><![CDATA[<p>本人是一个在游戏开发领域奋斗的同学, 本站是一些个人的学习记录&amp;学习笔记</p>
-<p>关键词如下</p>
-<ul>
-<li>Unity &amp; Unreal</li>
-<li>c++ &amp; c#</li>
-<li>图形学 &amp; 渲染</li>
-<li>lua, Typescript</li>
-<li>其他杂七杂八的内容</li>
-</ul>
-<p>因为是个人学习笔记, 对于一些东西理解有限, 也可能有纰漏和错误, 看到的话欢迎指正 ~</p>
-<p>如果有些内容帮到你, 十分荣幸 ~</p>
-]]></content>
-      <categories>
-        <category>aolixin</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>clash 公司内网环境下, 配置代理</title>
-    <url>/2024/12/21/clash/</url>
-    <content><![CDATA[<p>起因是公司是内网环境, 只支持访问国内的一些网站</p>
-<p>为了科学上网, 公司给出了一个 chrome 的插件, 通过插件去配置浏览器代理</p>
-<p>但是当我用 Epic Games 在线下载 UE 的时候, 速度实在感人, 问了公司 IT 同学, IT 那边说让我去申请公司海外 vpn, 这太麻烦了!</p>
-<p>于是乎, 我选择了自己配置代理软件</p>
-<p>我自己笔记本用的是 clash for windows 这个代理软件</p>
-<p>我在公司电脑上配置好了之后, 成功解决全局代理的问题</p>
-<p>但是, 另一个问题发生了, 公司内网进不去了 !!!</p>
-<p>公司的 OA 系统, 包括一些 wiki, 都是在内网环境的 !!!, 为什么配置代理之后进不去了呢?</p>
-<p>于是我脑海中第一个解决办法是, 配置分流规则, 在访问公司内网的时候, 直接连接, 而不是走代理, 这个可以很方便的在 clash 内配置</p>
-<img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241221184908513.png" alt="image-20241221184908513" style="zoom: 50%;" />
-
-<img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241221185018730.png" alt="image-20241221185018730" style="zoom:50%;" />
-
-
-
-<p>也可以打开配置文件, 手动配置, 这里就不演示了</p>
-<p>但是当我配置完之后, 竟然没有用 !!!</p>
-<p>我很奇怪啊, 于是把 clash Proxies 切换成  Global, 还是进不去, why why why</p>
-<p>于是在前辈们的指导下, 我去查日志, 发现, 原来是 DNS 有问题 !</p>
-<p>公司是内网环境, 有自己的 DNS 服务器, 而 clash 有自己的 DNS 服务器, 这我的 IP 解析是失败的</p>
-<p>于是乎, 我查啊查, 发现, clash 有个 Mixin 功能, 可以在 clash DNS 基础上, 配置自己的 DNS 服务器</p>
-<p>所以解决方案如下</p>
-<ol>
-<li>在 “网络和 Internet” 下, 查看自己的 DNS 服务器地址</li>
-<li>配置到 clash Mixin 中 –&gt; <a href="https://blog.csdn.net/YoungHong1992/article/details/133862017">https://blog.csdn.net/YoungHong1992/article/details/133862017</a></li>
-</ol>
-<img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241221190002349.png" alt="image-20241221190002349" style="zoom: 50%;" />
-
-
-
-<p>最后最后, 我们成功地, 在保留外网访问能力的同时, 畅通的访问公司内网</p>
-]]></content>
-      <categories>
-        <category>others</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>typora + 阿里云oss搭建个人博客</title>
-    <url>/2024/10/27/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<p>-- 敖立鑫 本文使用下列方案完成</p>
-<h2 id="搭建过程"><a href="#搭建过程" class="headerlink" title="搭建过程"></a>搭建过程</h2><ol>
-<li>首先购买阿里云服务器</li>
-<li>使用宝塔搭建网站</li>
-<li>构建 wordpress 一键博客搭建工具</li>
-<li>购买阿里云 oss 作为图床</li>
-<li>下载 picGo</li>
-<li>配置图床设置</li>
-<li>typora 下载支持 picGo插件</li>
-<li>本地用 typora 编写markdown</li>
-<li>最后用 publish markdown 上传到 wordpress</li>
-</ol>
-<p>测试图片 <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202310281108280.png" alt="image-20231028110817496"></p>
-]]></content>
-      <categories>
-        <category>aolixin</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>clion 编译 lua</title>
-    <url>/2024/10/04/clion-%E7%BC%96%E8%AF%91-lua/</url>
-    <content><![CDATA[<h1 id="clion-编译-lua"><a href="#clion-编译-lua" class="headerlink" title="clion 编译 lua"></a>clion 编译 lua</h1><h2 id="下载-lua-源码"><a href="#下载-lua-源码" class="headerlink" title="下载 lua 源码"></a>下载 lua 源码</h2><p><a href="https://www.lua.org/source/">https://www.lua.org/source/</a></p>
-<h2 id="配置-clion"><a href="#配置-clion" class="headerlink" title="配置 clion"></a>配置 clion</h2><p>这里用的是 MinGW 编译器</p>
-<p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241004141044585.png" alt="image-20241004141044585"></p>
-<h2 id="构建项目"><a href="#构建项目" class="headerlink" title="构建项目"></a>构建项目</h2><ol>
-<li><p>随便新建一个 c++ 可执行文件项目</p>
-</li>
-<li><p>将 lua 源码拷贝到项目目录下</p>
-</li>
-</ol>
-<p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241004141205312.png" alt="image-20241004141205312"></p>
-<h2 id="编译工程"><a href="#编译工程" class="headerlink" title="编译工程"></a>编译工程</h2><h3 id="修改-CMakeLists-txt"><a href="#修改-CMakeLists-txt" class="headerlink" title="修改 CMakeLists.txt"></a>修改 CMakeLists.txt</h3><p>别人写好的 cmake 文件, 可以直接拿来用<br>lua 5.1 cmake 文件 - <a href="https://gist.github.com/squeek502/76fb065848897138a95d11f9aa0eedd4">https://gist.github.com/squeek502/76fb065848897138a95d11f9aa0eedd4</a><br>lua 5.3 cmake 文件 - <a href="https://gist.github.com/squeek502/0706332efb18edd0601a4074762b0b9a">https://gist.github.com/squeek502/0706332efb18edd0601a4074762b0b9a</a></p>
-<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p>直接点击 [构建&#x2F;构建项目] 就好了</p>
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241004141647392.png" alt="image-20241004141647392"></p>
-]]></content>
-      <categories>
-        <category>lua</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>jenkins + unity 自动打包</title>
-    <url>/2024/05/15/jenkins-unity-%E8%87%AA%E5%8A%A8%E6%89%93%E5%8C%85/</url>
-    <content><![CDATA[<h1 id="jenkins-unity-自动打包"><a href="#jenkins-unity-自动打包" class="headerlink" title="jenkins + unity 自动打包"></a>jenkins + unity 自动打包</h1><h2 id="配置-java-环境"><a href="#配置-java-环境" class="headerlink" title="配置 java 环境"></a>配置 java 环境</h2><p>没啥问题</p>
-<h2 id="配置-jenkins"><a href="#配置-jenkins" class="headerlink" title="配置 jenkins"></a>配置 jenkins</h2><p>开始一直显示 waiting,在查找解决办法的过程中自己好了</p>
-<h2 id="执行-bat-命令"><a href="#执行-bat-命令" class="headerlink" title="执行 bat 命令"></a>执行 bat 命令</h2><p>没啥问题</p>
-<h2 id="调用-python-脚本"><a href="#调用-python-脚本" class="headerlink" title="调用 python 脚本"></a>调用 python 脚本</h2><p>开始掉用不了, 切换了工作目录就行了</p>
-<h2 id="unity-内打包"><a href="#unity-内打包" class="headerlink" title="unity 内打包"></a>unity 内打包</h2><p>Editor 扩展静态函数</p>
-<h2 id="bat-调用-unity-静态函数"><a href="#bat-调用-unity-静态函数" class="headerlink" title="bat 调用 unity 静态函数"></a>bat 调用 unity 静态函数</h2><p>踩坑:如果不是默认命名空间,参数得加上命名空间</p>
-<h2 id="python-调用-unity-打包"><a href="#python-调用-unity-打包" class="headerlink" title="python 调用 unity 打包"></a>python 调用 unity 打包</h2><p>本质还是通过 bat 调用 unity 静态函数,不过 python 更加灵活了一点</p>
-<p>很坑很坑的一点, python 调用 bat 时候格式要求很严格</p>
-]]></content>
-      <categories>
-        <category>Unity</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>图形学处理旋转</title>
-    <url>/2024/02/19/%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%A4%84%E7%90%86%E6%97%8B%E8%BD%AC/</url>
-    <content><![CDATA[<h1 id="敖立鑫"><a href="#敖立鑫" class="headerlink" title="-- 敖立鑫"></a>-- 敖立鑫</h1><h2 id="欧拉角"><a href="#欧拉角" class="headerlink" title="欧拉角"></a>欧拉角</h2><p><strong>优点</strong></p>
-<ul>
-<li>简单</li>
-<li>直观</li>
-</ul>
-<p><strong>缺点</strong></p>
-<ul>
-<li><p>根据旋转顺序的不同,会导致不同的结果</p>
-</li>
-<li><p>会导致万向节死锁</p>
-</li>
-<li><p>万向节死锁举例</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">首先确定手机的物体坐标系朝向，假设z轴与手机屏幕垂直（手机平放于桌面）指向上方，手机较短的一条边为x轴，较长的一条边为y轴（方向由手机尾部指向头部），物体坐标系的原点是手机左下角的顶点。（注意旋转顺序为zyx）绕z轴旋转任意角度（注意x和y轴也跟着一起旋转），再绕y轴旋转90°，再绕x轴旋转任意角度。通过多次尝试，会发现一个共同点：z轴永远是水平的， 通俗的说，手机永远也不会立起来（旋转形成的三维空间是固定的）！本来以为手机会指向任何方向，但实际上手机好像是被锁在桌面上，只能指向水平的某个方向，这个现象就称为万向锁。而如果绕y轴旋转不等于90°（1°也好89°也好），只要选择适当的绕x和z的角度，就可以让手机指向三维空间中的任何一个方向，手机是自由的（旋转产生的三维空间不会完全重叠），也就不会遇到万向锁现象。</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="轴角"><a href="#轴角" class="headerlink" title="轴角"></a>轴角</h2><p>轴角的出现是为了避免万向节死锁问题 表示为 <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202739051.png" alt="image-20240219202739051"> R(n,θ) 为旋转矩阵 <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219192444630.png" alt="image-20240219192444630"> 推导过程 —&gt;<a href="https://blog.csdn.net/u014265928/article/details/117170481">【机器人学】绕空间任意轴的旋转矩阵推导_绕任意轴旋转的旋转矩阵-CSDN博客</a></p>
-<h2 id="四元数"><a href="#四元数" class="headerlink" title="四元数"></a>四元数</h2><p>四元数主要是为了方便轴角的计算</p>
-<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>四元数是一种复数的拓展 一个四元数有如下形式： <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202758348.png" alt="image-20240219202758348"> 其中，w 为实部，x，y，z为虚部</p>
-<h3 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h3><p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202840427.png" alt="image-20240219202840427"></p>
-<h3 id="处理旋转时"><a href="#处理旋转时" class="headerlink" title="处理旋转时:"></a>处理旋转时:</h3><ol>
-<li><strong>将待旋转 向量&#x2F;点 转换成纯四元数</strong></li>
-</ol>
-<p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202901373.png" alt="image-20240219202901373"></p>
-<ol start="2">
-<li><strong>根据轴角求出表示的旋转四元数 q</strong></li>
-</ol>
-<ul>
-<li>假设旋转用轴角表示为 (x，y，z，<em>θ)</em>, θ 的范围 [ -pi,pi ]</li>
-</ul>
-<p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202926482.png" alt="image-20240219202926482"> <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219195101320.png" alt="image-20240219195101320"></p>
-<ol start="3">
-<li><strong>计算 q 的共轭四元数 q</strong>*</li>
-</ol>
-<p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202949520.png" alt="image-20240219202949520"></p>
-<ol start="4">
-<li><strong>根据公式 v′′&#x3D;qv′q∗ 求出结果</strong></li>
-</ol>
-<p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219203006435.png" alt="image-20240219203006435"></p>
-<ol start="5">
-<li><strong>将上述过程转换为矩阵形式</strong></li>
-</ol>
-<p><img src="https://img-blog.csdnimg.cn/20190312200542768.png" alt="img"> <strong>c++ 实现</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 旋转变换，围绕 (x, y, z) 矢量旋转 theta 角度</span><br><span class="line">inline static Mat4x4f matrix_set_rotate(float x, float y, float z, float theta) &#123;</span><br><span class="line">float qsin = (float)sin(theta * 0.5f);</span><br><span class="line">float qcos = (float)cos(theta * 0.5f);</span><br><span class="line">float w = qcos;</span><br><span class="line">Vec3f vec = vector_normalize(Vec3f(x, y, z));</span><br><span class="line">x = vec.x * qsin;</span><br><span class="line">y = vec.y * qsin;</span><br><span class="line">z = vec.z * qsin;</span><br><span class="line">Mat4x4f m;</span><br><span class="line">m.data[0][0] = 1 - 2 * y * y - 2 * z * z;</span><br><span class="line">m.data[1][0] = 2 * x * y - 2 * w * z;</span><br><span class="line">m.data[2][0] = 2 * x * z + 2 * w * y;</span><br><span class="line">m.data[0][1] = 2 * x * y + 2 * w * z;</span><br><span class="line">m.data[1][1] = 1 - 2 * x * x - 2 * z * z;</span><br><span class="line">m.data[2][1] = 2 * y * z - 2 * w * x;</span><br><span class="line">m.data[0][2] = 2 * x * z - 2 * w * y;</span><br><span class="line">m.data[1][2] = 2 * y * z + 2 * w * x;</span><br><span class="line">m.data[2][2] = 1 - 2 * x * x - 2 * y * y;</span><br><span class="line">m.data[0][3] = m.data[1][3] = m.data[2][3] = 0.0f;</span><br><span class="line">m.data[3][0] = m.data[3][1] = m.data[3][2] = 0.0f;</span><br><span class="line">m.data[3][3] = 1.0f;</span><br><span class="line">return m;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>推导见 —&gt; <a href="https://blog.csdn.net/u014265928/article/details/117161701">【机器人学】四元数与旋转矩阵的相互转换_四元数转旋转矩阵-CSDN博客</a></p>
-<h2 id="四元数-和-旋转矩阵对比"><a href="#四元数-和-旋转矩阵对比" class="headerlink" title="四元数 和 旋转矩阵对比"></a>四元数 和 旋转矩阵对比</h2><ul>
-<li>四元数在计算机内更紧凑</li>
-<li>四元数用 4 个变量即可表示旋转,而轴角旋转矩阵需要 9 个</li>
-<li>四元数计算效率更高</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Rendering</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>c++ 软渲染器</title>
-    <url>/2024/02/13/%E8%BD%AF%E6%B8%B2%E6%9F%93%E5%99%A8/</url>
-    <content><![CDATA[<p>-- 敖立鑫 一个很简单的渲染器 工程见 –&gt; <a href="https://github.com/aolixin/ToyRenderer">https://github.com/aolixin/ToyRenderer</a></p>
-<h2 id="简介-特征"><a href="#简介-特征" class="headerlink" title="简介&amp;特征"></a>简介&amp;特征</h2><ul>
-<li>坐标变换采用 opengl 标准</li>
-<li>实现 Vector&#x2F;Matrix 数学库</li>
-<li>实现 Bitmap 工具库, 包含加载纹理,采样纹理,画点,画线等操作</li>
-<li>定点着色器和片元着色器由 c++ 编写</li>
-<li>光栅化采用 Edge Equation 方法</li>
-<li>利用重心坐标插值</li>
-<li>采样使用双线性插值</li>
-</ul>
-<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><p>结构也很简单</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">ToyRenderer --</span><br><span class="line">    -- include</span><br><span class="line">        -- Bitmap.h    -- 操作 bitmap 的工具库</span><br><span class="line">        -- Renderer.h  -- 渲染核心</span><br><span class="line">        -- Vector.h    -- 数学库,实现了 Vector 和 Matrix</span><br><span class="line">        -- Model.h-- 模型的加载</span><br><span class="line">     -- src</span><br><span class="line">     -- test.cpp   -- 程序入口</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h2><p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240213211846234.png" alt="image-20240213211846234"> <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240213205633277.png" alt="image-20240213205633277"></p>
-<h2 id="主要参考"><a href="#主要参考" class="headerlink" title="主要参考"></a>主要参考</h2><p><a href="https://github.com/skywind3000/RenderHelp">https://github.com/skywind3000/RenderHelp</a> <a href="https://bbs.huaweicloud.com/blogs/358776">https://bbs.huaweicloud.com/blogs/358776</a> <a href="https://github.com/ssloy/tinyrenderer">https://github.com/ssloy/tinyrenderer</a></p>
-]]></content>
-      <categories>
-        <category>Rendering</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>unity 实现 PBR</title>
-    <url>/2023/11/08/unity%20pbr/</url>
-    <content><![CDATA[<p>-- 敖立鑫</p>
-<h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><p>unity shder 几种渲染模式 <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081443441.png" alt="img"> 这里使用前向渲染管线 通过在 Tags中添加 “LightMode” &#x3D; “ForwardBase” 选择渲染模式 ForwrdBase</p>
-<ul>
-<li>基础光照计算：漫反射，镜面反射，阴影计算等</li>
-<li>考虑所有光源</li>
-<li>计算平行光</li>
-</ul>
-<p>ForwrdAdd</p>
-<ul>
-<li>额外的光照效果：逐像素的操作</li>
-<li>默认计算 前四个最重要的 点光源</li>
-</ul>
-<p>这里我们只用一个平行光，暂时只用 ForwrdBase</p>
-<h2 id="搭建场景"><a href="#搭建场景" class="headerlink" title="搭建场景"></a>搭建场景</h2><p>首先新建一个场景，使用 hdrp 管线 替换 material <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081444582.png" alt="image-20231104213410160"></p>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h3 id="先实现一个-blinn-phong-光照模型"><a href="#先实现一个-blinn-phong-光照模型" class="headerlink" title="先实现一个 blinn-phong 光照模型"></a>先实现一个 blinn-phong 光照模型</h3><p>因为我们要实现更好的效果，不考虑性能，所以我们的光照计算都将在 frag shader 进行 首先新建一个 unlitShader <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081444026.png" alt="image-20231105194100976"></p>
-<h3 id="添加-pbr"><a href="#添加-pbr" class="headerlink" title="添加 pbr"></a>添加 pbr</h3><h4 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h4><p>有多种 brdf 模型 我们这里主要实现 Cook-Torrance BRDF Cook-Torrance BRDF 分为漫反射和镜面反射两个部分 <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081444201.png" alt="image-20231106085634950"> 漫反射采用 lambertian 漫反射， <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081455852.png"> 镜面反射主要有三个函数 <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081444161.png" alt="image-20231106085839814"></p>
-<ul>
-<li><strong>D 法线分布函数</strong>：表示反射光强度在法线附件的分布，微平面向量和面法向越接近，强度越大。通过粗糙度改变波瓣形状<ul>
-<li>近似表示了微平面与半程向量的一致的比率</li>
-</ul>
-</li>
-<li><strong>G 几何函数</strong>：表示掠视时的几何遮蔽，通过史密斯法叠加入射和出射两个方向</li>
-<li><strong>F 菲涅尔方程</strong>：表示菲涅尔效应，掠视金属时反射较多的光而俯视时反射光较少</li>
-</ul>
-<h4 id="CG-实现"><a href="#CG-实现" class="headerlink" title="CG 实现"></a>CG 实现</h4><p>法线分布函数</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 法线分布函数</span><br><span class="line">// 法线，半程向量，粗糙度</span><br><span class="line">float D_GGX_TR( fixed3 N, fixed3 H, float a)</span><br><span class="line">&#123;</span><br><span class="line">    float a2 = a * a;</span><br><span class="line">    float NdotH = max(dot(N,H),0);</span><br><span class="line">    float NdotH2 = NdotH * NdotH;</span><br><span class="line"></span><br><span class="line">    float nom = a2;</span><br><span class="line">    float denom = ( NdotH2 * (a2 - 1.0) + 1.0 );</span><br><span class="line">    denom = PI * denom * denom;</span><br><span class="line">    return nom / denom;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 几何方程</span><br><span class="line">float GeometrySchlickGGX(float NdotV, float roughness )</span><br><span class="line">&#123;</span><br><span class="line">    float r = (roughness + 1.0);</span><br><span class="line">    float k = (r*r) / 8.0;</span><br><span class="line"></span><br><span class="line">    float num   = NdotV;</span><br><span class="line">    float denom = NdotV * (1.0 - k) + k;</span><br><span class="line"></span><br><span class="line">    return num / denom;</span><br><span class="line">&#125;</span><br><span class="line">float GeometrySmith(fixed3 N, fixed3 V, fixed3 L, float roughness)</span><br><span class="line">&#123;</span><br><span class="line">    float NdotV = max(dot(N, V), 0.0);</span><br><span class="line">    float NdotL = max(dot(N, L), 0.0);</span><br><span class="line">    float ggx1 = GeometrySchlickGGX(NdotV, roughness);</span><br><span class="line">    float ggx2 = GeometrySchlickGGX(NdotL, roughness);</span><br><span class="line"></span><br><span class="line">    return ggx1 * ggx2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 菲涅尔方程</span><br><span class="line">// cosTheta -- Normal dot viewDir  F0 -- 表面颜色，反射率</span><br><span class="line">fixed3 fresnelSchlick(float cosTheta , fixed3 F0)</span><br><span class="line">&#123;</span><br><span class="line"> return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0) , 5.0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>效果不太好，以后有时间再优化 <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081444360.png" alt="image-20231108144102376"></p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://zhuanlan.zhihu.com/p/31766439">笔记九——渲染路径&amp;复杂光照 - 知乎 (zhihu.com)</a> <a href="https://blog.csdn.net/u014078887/article/details/117308741">UnityShader-平行光和点光源的基础介绍和使用_unity_4lightposx0-CSDN博客</a></p>
-]]></content>
-      <categories>
-        <category>Unity</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>xlua 和 unity 判空踩的坑</title>
-    <url>/2023/11/01/lua%20%E5%88%A4%E7%A9%BAbug/</url>
-    <content><![CDATA[<p>--敖立鑫</p>
-<h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>有些对象在 c# 删掉了，但是 lua 不知道</p>
-<h2 id="解决："><a href="#解决：" class="headerlink" title="解决："></a>解决：</h2><p>判断对象为空可以用下面这个函数</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">function IsNil(obj)</span><br><span class="line">return obj == nil or obj:Equals(nil)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-
-<p><a href="https://blog.csdn.net/qq_33205561/article/details/120952915">Lua下对gameObject判空</a></p>
-]]></content>
-      <categories>
-        <category>lua</category>
-      </categories>
-  </entry>
-  <entry>
     <title>unity SRP</title>
     <url>/2023/10/28/SRP/</url>
     <content><![CDATA[<p>-- 敖立鑫 2023.10.18开始，工程放在：<a href="https://github.com/aolixin/ToyRenderPipeline">github</a> <a href="https://catlikecoding.com/unity/tutorials/custom-srp/custom-render-pipeline/">Custom Render Pipeline (catlikecoding.com)</a> – 基于这个教程</p>
@@ -585,6 +334,257 @@ FilterDirectionalShadow(positionSTS), shadow, global.cascadeBlend
 ]]></content>
       <categories>
         <category>aolixin</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>clion 编译 lua</title>
+    <url>/2024/10/04/clion-%E7%BC%96%E8%AF%91-lua/</url>
+    <content><![CDATA[<h1 id="clion-编译-lua"><a href="#clion-编译-lua" class="headerlink" title="clion 编译 lua"></a>clion 编译 lua</h1><h2 id="下载-lua-源码"><a href="#下载-lua-源码" class="headerlink" title="下载 lua 源码"></a>下载 lua 源码</h2><p><a href="https://www.lua.org/source/">https://www.lua.org/source/</a></p>
+<h2 id="配置-clion"><a href="#配置-clion" class="headerlink" title="配置 clion"></a>配置 clion</h2><p>这里用的是 MinGW 编译器</p>
+<p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241004141044585.png" alt="image-20241004141044585"></p>
+<h2 id="构建项目"><a href="#构建项目" class="headerlink" title="构建项目"></a>构建项目</h2><ol>
+<li><p>随便新建一个 c++ 可执行文件项目</p>
+</li>
+<li><p>将 lua 源码拷贝到项目目录下</p>
+</li>
+</ol>
+<p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241004141205312.png" alt="image-20241004141205312"></p>
+<h2 id="编译工程"><a href="#编译工程" class="headerlink" title="编译工程"></a>编译工程</h2><h3 id="修改-CMakeLists-txt"><a href="#修改-CMakeLists-txt" class="headerlink" title="修改 CMakeLists.txt"></a>修改 CMakeLists.txt</h3><p>别人写好的 cmake 文件, 可以直接拿来用<br>lua 5.1 cmake 文件 - <a href="https://gist.github.com/squeek502/76fb065848897138a95d11f9aa0eedd4">https://gist.github.com/squeek502/76fb065848897138a95d11f9aa0eedd4</a><br>lua 5.3 cmake 文件 - <a href="https://gist.github.com/squeek502/0706332efb18edd0601a4074762b0b9a">https://gist.github.com/squeek502/0706332efb18edd0601a4074762b0b9a</a></p>
+<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p>直接点击 [构建&#x2F;构建项目] 就好了</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241004141647392.png" alt="image-20241004141647392"></p>
+]]></content>
+      <categories>
+        <category>lua</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>jenkins + unity 自动打包</title>
+    <url>/2024/05/15/jenkins-unity-%E8%87%AA%E5%8A%A8%E6%89%93%E5%8C%85/</url>
+    <content><![CDATA[<h1 id="jenkins-unity-自动打包"><a href="#jenkins-unity-自动打包" class="headerlink" title="jenkins + unity 自动打包"></a>jenkins + unity 自动打包</h1><h2 id="配置-java-环境"><a href="#配置-java-环境" class="headerlink" title="配置 java 环境"></a>配置 java 环境</h2><p>没啥问题</p>
+<h2 id="配置-jenkins"><a href="#配置-jenkins" class="headerlink" title="配置 jenkins"></a>配置 jenkins</h2><p>开始一直显示 waiting,在查找解决办法的过程中自己好了</p>
+<h2 id="执行-bat-命令"><a href="#执行-bat-命令" class="headerlink" title="执行 bat 命令"></a>执行 bat 命令</h2><p>没啥问题</p>
+<h2 id="调用-python-脚本"><a href="#调用-python-脚本" class="headerlink" title="调用 python 脚本"></a>调用 python 脚本</h2><p>开始掉用不了, 切换了工作目录就行了</p>
+<h2 id="unity-内打包"><a href="#unity-内打包" class="headerlink" title="unity 内打包"></a>unity 内打包</h2><p>Editor 扩展静态函数</p>
+<h2 id="bat-调用-unity-静态函数"><a href="#bat-调用-unity-静态函数" class="headerlink" title="bat 调用 unity 静态函数"></a>bat 调用 unity 静态函数</h2><p>踩坑:如果不是默认命名空间,参数得加上命名空间</p>
+<h2 id="python-调用-unity-打包"><a href="#python-调用-unity-打包" class="headerlink" title="python 调用 unity 打包"></a>python 调用 unity 打包</h2><p>本质还是通过 bat 调用 unity 静态函数,不过 python 更加灵活了一点</p>
+<p>很坑很坑的一点, python 调用 bat 时候格式要求很严格</p>
+]]></content>
+      <categories>
+        <category>Unity</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>clash 公司内网环境下, 配置代理</title>
+    <url>/2024/12/21/clash/</url>
+    <content><![CDATA[<p>起因是公司是内网环境, 只支持访问国内的一些网站</p>
+<p>为了科学上网, 公司给出了一个 chrome 的插件, 通过插件去配置浏览器代理</p>
+<p>但是当我用 Epic Games 在线下载 UE 的时候, 速度实在感人, 问了公司 IT 同学, IT 那边说让我去申请公司海外 vpn, 这太麻烦了!</p>
+<p>于是乎, 我选择了自己配置代理软件</p>
+<p>我自己笔记本用的是 clash for windows 这个代理软件</p>
+<p>我在公司电脑上配置好了之后, 成功解决全局代理的问题</p>
+<p>但是, 另一个问题发生了, 公司内网进不去了 !!!</p>
+<p>公司的 OA 系统, 包括一些 wiki, 都是在内网环境的 !!!, 为什么配置代理之后进不去了呢?</p>
+<p>于是我脑海中第一个解决办法是, 配置分流规则, 在访问公司内网的时候, 直接连接, 而不是走代理, 这个可以很方便的在 clash 内配置</p>
+<img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241221184908513.png" alt="image-20241221184908513" style="zoom: 50%;" />
+
+<img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241221185018730.png" alt="image-20241221185018730" style="zoom:50%;" />
+
+
+
+<p>也可以打开配置文件, 手动配置, 这里就不演示了</p>
+<p>但是当我配置完之后, 竟然没有用 !!!</p>
+<p>我很奇怪啊, 于是把 clash Proxies 切换成  Global, 还是进不去, why why why</p>
+<p>于是在前辈们的指导下, 我去查日志, 发现, 原来是 DNS 有问题 !</p>
+<p>公司是内网环境, 有自己的 DNS 服务器, 而 clash 有自己的 DNS 服务器, 这我的 IP 解析是失败的</p>
+<p>于是乎, 我查啊查, 发现, clash 有个 Mixin 功能, 可以在 clash DNS 基础上, 配置自己的 DNS 服务器</p>
+<p>所以解决方案如下</p>
+<ol>
+<li>在 “网络和 Internet” 下, 查看自己的 DNS 服务器地址</li>
+<li>配置到 clash Mixin 中 –&gt; <a href="https://blog.csdn.net/YoungHong1992/article/details/133862017">https://blog.csdn.net/YoungHong1992/article/details/133862017</a></li>
+</ol>
+<img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241221190002349.png" alt="image-20241221190002349" style="zoom: 50%;" />
+
+
+
+<p>最后最后, 我们成功地, 在保留外网访问能力的同时, 畅通的访问公司内网</p>
+]]></content>
+      <categories>
+        <category>others</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>typora + 阿里云oss搭建个人博客</title>
+    <url>/2024/10/27/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<p>-- 敖立鑫 本文使用下列方案完成</p>
+<h2 id="搭建过程"><a href="#搭建过程" class="headerlink" title="搭建过程"></a>搭建过程</h2><ol>
+<li>首先购买阿里云服务器</li>
+<li>使用宝塔搭建网站</li>
+<li>构建 wordpress 一键博客搭建工具</li>
+<li>购买阿里云 oss 作为图床</li>
+<li>下载 picGo</li>
+<li>配置图床设置</li>
+<li>typora 下载支持 picGo插件</li>
+<li>本地用 typora 编写markdown</li>
+<li>最后用 publish markdown 上传到 wordpress</li>
+</ol>
+<p>测试图片 <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202310281108280.png" alt="image-20231028110817496"></p>
+]]></content>
+      <categories>
+        <category>aolixin</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>unity 实现 PBR</title>
+    <url>/2023/11/08/unity%20pbr/</url>
+    <content><![CDATA[<p>-- 敖立鑫</p>
+<h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><p>unity shder 几种渲染模式 <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081443441.png" alt="img"> 这里使用前向渲染管线 通过在 Tags中添加 “LightMode” &#x3D; “ForwardBase” 选择渲染模式 ForwrdBase</p>
+<ul>
+<li>基础光照计算：漫反射，镜面反射，阴影计算等</li>
+<li>考虑所有光源</li>
+<li>计算平行光</li>
+</ul>
+<p>ForwrdAdd</p>
+<ul>
+<li>额外的光照效果：逐像素的操作</li>
+<li>默认计算 前四个最重要的 点光源</li>
+</ul>
+<p>这里我们只用一个平行光，暂时只用 ForwrdBase</p>
+<h2 id="搭建场景"><a href="#搭建场景" class="headerlink" title="搭建场景"></a>搭建场景</h2><p>首先新建一个场景，使用 hdrp 管线 替换 material <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081444582.png" alt="image-20231104213410160"></p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h3 id="先实现一个-blinn-phong-光照模型"><a href="#先实现一个-blinn-phong-光照模型" class="headerlink" title="先实现一个 blinn-phong 光照模型"></a>先实现一个 blinn-phong 光照模型</h3><p>因为我们要实现更好的效果，不考虑性能，所以我们的光照计算都将在 frag shader 进行 首先新建一个 unlitShader <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081444026.png" alt="image-20231105194100976"></p>
+<h3 id="添加-pbr"><a href="#添加-pbr" class="headerlink" title="添加 pbr"></a>添加 pbr</h3><h4 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h4><p>有多种 brdf 模型 我们这里主要实现 Cook-Torrance BRDF Cook-Torrance BRDF 分为漫反射和镜面反射两个部分 <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081444201.png" alt="image-20231106085634950"> 漫反射采用 lambertian 漫反射， <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081455852.png"> 镜面反射主要有三个函数 <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081444161.png" alt="image-20231106085839814"></p>
+<ul>
+<li><strong>D 法线分布函数</strong>：表示反射光强度在法线附件的分布，微平面向量和面法向越接近，强度越大。通过粗糙度改变波瓣形状<ul>
+<li>近似表示了微平面与半程向量的一致的比率</li>
+</ul>
+</li>
+<li><strong>G 几何函数</strong>：表示掠视时的几何遮蔽，通过史密斯法叠加入射和出射两个方向</li>
+<li><strong>F 菲涅尔方程</strong>：表示菲涅尔效应，掠视金属时反射较多的光而俯视时反射光较少</li>
+</ul>
+<h4 id="CG-实现"><a href="#CG-实现" class="headerlink" title="CG 实现"></a>CG 实现</h4><p>法线分布函数</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 法线分布函数</span><br><span class="line">// 法线，半程向量，粗糙度</span><br><span class="line">float D_GGX_TR( fixed3 N, fixed3 H, float a)</span><br><span class="line">&#123;</span><br><span class="line">    float a2 = a * a;</span><br><span class="line">    float NdotH = max(dot(N,H),0);</span><br><span class="line">    float NdotH2 = NdotH * NdotH;</span><br><span class="line"></span><br><span class="line">    float nom = a2;</span><br><span class="line">    float denom = ( NdotH2 * (a2 - 1.0) + 1.0 );</span><br><span class="line">    denom = PI * denom * denom;</span><br><span class="line">    return nom / denom;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 几何方程</span><br><span class="line">float GeometrySchlickGGX(float NdotV, float roughness )</span><br><span class="line">&#123;</span><br><span class="line">    float r = (roughness + 1.0);</span><br><span class="line">    float k = (r*r) / 8.0;</span><br><span class="line"></span><br><span class="line">    float num   = NdotV;</span><br><span class="line">    float denom = NdotV * (1.0 - k) + k;</span><br><span class="line"></span><br><span class="line">    return num / denom;</span><br><span class="line">&#125;</span><br><span class="line">float GeometrySmith(fixed3 N, fixed3 V, fixed3 L, float roughness)</span><br><span class="line">&#123;</span><br><span class="line">    float NdotV = max(dot(N, V), 0.0);</span><br><span class="line">    float NdotL = max(dot(N, L), 0.0);</span><br><span class="line">    float ggx1 = GeometrySchlickGGX(NdotV, roughness);</span><br><span class="line">    float ggx2 = GeometrySchlickGGX(NdotL, roughness);</span><br><span class="line"></span><br><span class="line">    return ggx1 * ggx2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 菲涅尔方程</span><br><span class="line">// cosTheta -- Normal dot viewDir  F0 -- 表面颜色，反射率</span><br><span class="line">fixed3 fresnelSchlick(float cosTheta , fixed3 F0)</span><br><span class="line">&#123;</span><br><span class="line"> return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0) , 5.0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>效果不太好，以后有时间再优化 <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081444360.png" alt="image-20231108144102376"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://zhuanlan.zhihu.com/p/31766439">笔记九——渲染路径&amp;复杂光照 - 知乎 (zhihu.com)</a> <a href="https://blog.csdn.net/u014078887/article/details/117308741">UnityShader-平行光和点光源的基础介绍和使用_unity_4lightposx0-CSDN博客</a></p>
+]]></content>
+      <categories>
+        <category>Unity</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>xlua 和 unity 判空踩的坑</title>
+    <url>/2023/11/01/lua%20%E5%88%A4%E7%A9%BAbug/</url>
+    <content><![CDATA[<p>--敖立鑫</p>
+<h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>有些对象在 c# 删掉了，但是 lua 不知道</p>
+<h2 id="解决："><a href="#解决：" class="headerlink" title="解决："></a>解决：</h2><p>判断对象为空可以用下面这个函数</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">function IsNil(obj)</span><br><span class="line">return obj == nil or obj:Equals(nil)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://blog.csdn.net/qq_33205561/article/details/120952915">Lua下对gameObject判空</a></p>
+]]></content>
+      <categories>
+        <category>lua</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>图形学处理旋转</title>
+    <url>/2024/02/19/%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%A4%84%E7%90%86%E6%97%8B%E8%BD%AC/</url>
+    <content><![CDATA[<h1 id="敖立鑫"><a href="#敖立鑫" class="headerlink" title="-- 敖立鑫"></a>-- 敖立鑫</h1><h2 id="欧拉角"><a href="#欧拉角" class="headerlink" title="欧拉角"></a>欧拉角</h2><p><strong>优点</strong></p>
+<ul>
+<li>简单</li>
+<li>直观</li>
+</ul>
+<p><strong>缺点</strong></p>
+<ul>
+<li><p>根据旋转顺序的不同,会导致不同的结果</p>
+</li>
+<li><p>会导致万向节死锁</p>
+</li>
+<li><p>万向节死锁举例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">首先确定手机的物体坐标系朝向，假设z轴与手机屏幕垂直（手机平放于桌面）指向上方，手机较短的一条边为x轴，较长的一条边为y轴（方向由手机尾部指向头部），物体坐标系的原点是手机左下角的顶点。（注意旋转顺序为zyx）绕z轴旋转任意角度（注意x和y轴也跟着一起旋转），再绕y轴旋转90°，再绕x轴旋转任意角度。通过多次尝试，会发现一个共同点：z轴永远是水平的， 通俗的说，手机永远也不会立起来（旋转形成的三维空间是固定的）！本来以为手机会指向任何方向，但实际上手机好像是被锁在桌面上，只能指向水平的某个方向，这个现象就称为万向锁。而如果绕y轴旋转不等于90°（1°也好89°也好），只要选择适当的绕x和z的角度，就可以让手机指向三维空间中的任何一个方向，手机是自由的（旋转产生的三维空间不会完全重叠），也就不会遇到万向锁现象。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="轴角"><a href="#轴角" class="headerlink" title="轴角"></a>轴角</h2><p>轴角的出现是为了避免万向节死锁问题 表示为 <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202739051.png" alt="image-20240219202739051"> R(n,θ) 为旋转矩阵 <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219192444630.png" alt="image-20240219192444630"> 推导过程 —&gt;<a href="https://blog.csdn.net/u014265928/article/details/117170481">【机器人学】绕空间任意轴的旋转矩阵推导_绕任意轴旋转的旋转矩阵-CSDN博客</a></p>
+<h2 id="四元数"><a href="#四元数" class="headerlink" title="四元数"></a>四元数</h2><p>四元数主要是为了方便轴角的计算</p>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>四元数是一种复数的拓展 一个四元数有如下形式： <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202758348.png" alt="image-20240219202758348"> 其中，w 为实部，x，y，z为虚部</p>
+<h3 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h3><p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202840427.png" alt="image-20240219202840427"></p>
+<h3 id="处理旋转时"><a href="#处理旋转时" class="headerlink" title="处理旋转时:"></a>处理旋转时:</h3><ol>
+<li><strong>将待旋转 向量&#x2F;点 转换成纯四元数</strong></li>
+</ol>
+<p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202901373.png" alt="image-20240219202901373"></p>
+<ol start="2">
+<li><strong>根据轴角求出表示的旋转四元数 q</strong></li>
+</ol>
+<ul>
+<li>假设旋转用轴角表示为 (x，y，z，<em>θ)</em>, θ 的范围 [ -pi,pi ]</li>
+</ul>
+<p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202926482.png" alt="image-20240219202926482"> <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219195101320.png" alt="image-20240219195101320"></p>
+<ol start="3">
+<li><strong>计算 q 的共轭四元数 q</strong>*</li>
+</ol>
+<p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202949520.png" alt="image-20240219202949520"></p>
+<ol start="4">
+<li><strong>根据公式 v′′&#x3D;qv′q∗ 求出结果</strong></li>
+</ol>
+<p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219203006435.png" alt="image-20240219203006435"></p>
+<ol start="5">
+<li><strong>将上述过程转换为矩阵形式</strong></li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/20190312200542768.png" alt="img"> <strong>c++ 实现</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 旋转变换，围绕 (x, y, z) 矢量旋转 theta 角度</span><br><span class="line">inline static Mat4x4f matrix_set_rotate(float x, float y, float z, float theta) &#123;</span><br><span class="line">float qsin = (float)sin(theta * 0.5f);</span><br><span class="line">float qcos = (float)cos(theta * 0.5f);</span><br><span class="line">float w = qcos;</span><br><span class="line">Vec3f vec = vector_normalize(Vec3f(x, y, z));</span><br><span class="line">x = vec.x * qsin;</span><br><span class="line">y = vec.y * qsin;</span><br><span class="line">z = vec.z * qsin;</span><br><span class="line">Mat4x4f m;</span><br><span class="line">m.data[0][0] = 1 - 2 * y * y - 2 * z * z;</span><br><span class="line">m.data[1][0] = 2 * x * y - 2 * w * z;</span><br><span class="line">m.data[2][0] = 2 * x * z + 2 * w * y;</span><br><span class="line">m.data[0][1] = 2 * x * y + 2 * w * z;</span><br><span class="line">m.data[1][1] = 1 - 2 * x * x - 2 * z * z;</span><br><span class="line">m.data[2][1] = 2 * y * z - 2 * w * x;</span><br><span class="line">m.data[0][2] = 2 * x * z - 2 * w * y;</span><br><span class="line">m.data[1][2] = 2 * y * z + 2 * w * x;</span><br><span class="line">m.data[2][2] = 1 - 2 * x * x - 2 * y * y;</span><br><span class="line">m.data[0][3] = m.data[1][3] = m.data[2][3] = 0.0f;</span><br><span class="line">m.data[3][0] = m.data[3][1] = m.data[3][2] = 0.0f;</span><br><span class="line">m.data[3][3] = 1.0f;</span><br><span class="line">return m;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>推导见 —&gt; <a href="https://blog.csdn.net/u014265928/article/details/117161701">【机器人学】四元数与旋转矩阵的相互转换_四元数转旋转矩阵-CSDN博客</a></p>
+<h2 id="四元数-和-旋转矩阵对比"><a href="#四元数-和-旋转矩阵对比" class="headerlink" title="四元数 和 旋转矩阵对比"></a>四元数 和 旋转矩阵对比</h2><ul>
+<li>四元数在计算机内更紧凑</li>
+<li>四元数用 4 个变量即可表示旋转,而轴角旋转矩阵需要 9 个</li>
+<li>四元数计算效率更高</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Rendering</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Hello This is aolixin</title>
+    <url>/2024/12/17/hello-world/</url>
+    <content><![CDATA[<p>本人是一个在游戏开发领域奋斗的同学, 本站是一些个人的学习记录&amp;学习笔记</p>
+<p>关键词如下</p>
+<ul>
+<li>Unity &amp; Unreal</li>
+<li>c++ &amp; c#</li>
+<li>图形学 &amp; 渲染</li>
+<li>lua, Typescript</li>
+<li>其他杂七杂八的内容</li>
+</ul>
+<p>因为是个人学习笔记, 对于一些东西理解有限, 也可能有纰漏和错误, 看到的话欢迎指正 ~</p>
+<p>如果有些内容帮到你, 十分荣幸 ~</p>
+]]></content>
+      <categories>
+        <category>aolixin</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>c++ 软渲染器</title>
+    <url>/2024/02/13/%E8%BD%AF%E6%B8%B2%E6%9F%93%E5%99%A8/</url>
+    <content><![CDATA[<p>-- 敖立鑫 一个很简单的渲染器 工程见 –&gt; <a href="https://github.com/aolixin/ToyRenderer">https://github.com/aolixin/ToyRenderer</a></p>
+<h2 id="简介-特征"><a href="#简介-特征" class="headerlink" title="简介&amp;特征"></a>简介&amp;特征</h2><ul>
+<li>坐标变换采用 opengl 标准</li>
+<li>实现 Vector&#x2F;Matrix 数学库</li>
+<li>实现 Bitmap 工具库, 包含加载纹理,采样纹理,画点,画线等操作</li>
+<li>定点着色器和片元着色器由 c++ 编写</li>
+<li>光栅化采用 Edge Equation 方法</li>
+<li>利用重心坐标插值</li>
+<li>采样使用双线性插值</li>
+</ul>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><p>结构也很简单</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">ToyRenderer --</span><br><span class="line">    -- include</span><br><span class="line">        -- Bitmap.h    -- 操作 bitmap 的工具库</span><br><span class="line">        -- Renderer.h  -- 渲染核心</span><br><span class="line">        -- Vector.h    -- 数学库,实现了 Vector 和 Matrix</span><br><span class="line">        -- Model.h-- 模型的加载</span><br><span class="line">     -- src</span><br><span class="line">     -- test.cpp   -- 程序入口</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h2><p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240213211846234.png" alt="image-20240213211846234"> <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240213205633277.png" alt="image-20240213205633277"></p>
+<h2 id="主要参考"><a href="#主要参考" class="headerlink" title="主要参考"></a>主要参考</h2><p><a href="https://github.com/skywind3000/RenderHelp">https://github.com/skywind3000/RenderHelp</a> <a href="https://bbs.huaweicloud.com/blogs/358776">https://bbs.huaweicloud.com/blogs/358776</a> <a href="https://github.com/ssloy/tinyrenderer">https://github.com/ssloy/tinyrenderer</a></p>
+]]></content>
+      <categories>
+        <category>Rendering</category>
       </categories>
   </entry>
 </search>
