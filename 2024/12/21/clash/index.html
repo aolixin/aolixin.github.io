@@ -4,15 +4,23 @@
   <meta charset="utf-8">
   
   
-  <title>Hexo</title>
+  <title>clash 公司内网环境下, 配置代理 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="起因是公司是内网环境, 只支持访问国内的一些网站 为了科学上网, 公司给出了一个 chrome 的插件, 通过插件去配置浏览器代理 但是当我用 Epic Games 在线下载 UE 的时候, 速度实在感人, 问了公司 IT 同学, IT 那边说让我去申请公司海外 vpn, 这太麻烦了! 于是乎, 我选择了自己配置代理软件 我自己笔记本用的是 clash for windows 这个代理软件 我在公">
+<meta property="og:type" content="article">
+<meta property="og:title" content="clash 公司内网环境下, 配置代理">
+<meta property="og:url" content="http://example.com/2024/12/21/clash/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="起因是公司是内网环境, 只支持访问国内的一些网站 为了科学上网, 公司给出了一个 chrome 的插件, 通过插件去配置浏览器代理 但是当我用 Epic Games 在线下载 UE 的时候, 速度实在感人, 问了公司 IT 同学, IT 那边说让我去申请公司海外 vpn, 这太麻烦了! 于是乎, 我选择了自己配置代理软件 我自己笔记本用的是 clash for windows 这个代理软件 我在公">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241221184908513.png">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241221185018730.png">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241221190002349.png">
+<meta property="article:published_time" content="2024-12-21T10:38:32.000Z">
+<meta property="article:modified_time" content="2024-12-21T11:03:46.385Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241221184908513.png">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -67,9 +75,7 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-    <article id="default-clash" class="h-entry article article-type-default" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="default-clash" class="h-entry article article-type-default" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2024/12/21/clash/" class="article-date">
   <time class="dt-published" datetime="2024-12-21T10:38:32.000Z" itemprop="datePublished">2024-12-21</time>
@@ -82,8 +88,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2024/12/21/clash/">clash 公司内网环境下, 配置代理</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      clash 公司内网环境下, 配置代理
     </h1>
   
 
@@ -133,60 +139,19 @@
     </footer>
   </div>
   
-</article>
-
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2024/12/17/hello-world/" class="article-date">
-  <time class="dt-published" datetime="2024-12-17T09:04:15.345Z" itemprop="datePublished">2024-12-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2024/12/17/hello-world/">Hello This is Shin</a>
-    </h1>
+    <a href="/2024/12/17/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hello This is Shin</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>本人是一个在游戏开发领域奋斗的同学, 本站是一些个人的学习记录&amp;学习笔记</p>
-<p>关键词如下</p>
-<ul>
-<li>Unity &amp; Unreal</li>
-<li>c++ &amp; c#</li>
-<li>图形学 &amp; 渲染</li>
-<li>lua, Typescript</li>
-<li>其他杂七杂八的内容</li>
-</ul>
-<p>因为是个人学习笔记, 对于一些东西理解有限, 也可能有纰漏和错误, 看到的话欢迎指正 ~</p>
-<p>如果有些内容帮到你, 十分荣幸 ~</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2024/12/17/hello-world/" data-id="cm4s8mw8b0000lwu6e7dqgeyg" data-title="Hello This is Shin" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
-  </div>
   
 </article>
-
-
-
-  
 
 
 </section>
