@@ -9,7 +9,7 @@
   <meta name="description" content="-- 敖立鑫 前置知识unity shder 几种渲染模式  这里使用前向渲染管线 通过在 Tags中添加 “LightMode” &#x3D; “ForwardBase” 选择渲染模式 ForwrdBase  基础光照计算：漫反射，镜面反射，阴影计算等 考虑所有光源 计算平行光  ForwrdAdd  额外的光照效果：逐像素的操作 默认计算 前四个最重要的 点光源  这里我们只用一个平行光，暂时">
 <meta property="og:type" content="article">
 <meta property="og:title" content="unity 实现 PBR">
-<meta property="og:url" content="http://example.com/2023/11/08/sample-6/index.html">
+<meta property="og:url" content="http://example.com/2023/11/08/unity%20pbr/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="-- 敖立鑫 前置知识unity shder 几种渲染模式  这里使用前向渲染管线 通过在 Tags中添加 “LightMode” &#x3D; “ForwardBase” 选择渲染模式 ForwrdBase  基础光照计算：漫反射，镜面反射，阴影计算等 考虑所有光源 计算平行光  ForwrdAdd  额外的光照效果：逐像素的操作 默认计算 前四个最重要的 点光源  这里我们只用一个平行光，暂时">
 <meta property="og:locale" content="en_US">
@@ -21,7 +21,7 @@
 <meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081444161.png">
 <meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081444360.png">
 <meta property="article:published_time" content="2023-11-08T06:49:23.000Z">
-<meta property="article:modified_time" content="2024-12-21T11:36:50.326Z">
+<meta property="article:modified_time" content="2024-12-21T11:46:16.668Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081443441.png">
@@ -79,14 +79,14 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-sample-6" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-unity pbr" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2023/11/08/sample-6/" class="article-date">
+    <a href="/2023/11/08/unity%20pbr/" class="article-date">
   <time class="dt-published" datetime="2023-11-08T06:49:23.000Z" itemprop="datePublished">2023-11-08</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/aolixin/">aolixin</a>
+    <a class="article-category-link" href="/categories/Unity/">Unity</a>
   </div>
 
   </div>
@@ -142,7 +142,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2023/11/08/sample-6/" data-id="cm4y3xvfj000c10u65qaievdo" data-title="unity 实现 PBR" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2023/11/08/unity%20pbr/" data-id="cm4y4651w000880u6g00qgmje" data-title="unity 实现 PBR" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -152,7 +152,7 @@
     
 <nav id="article-nav">
   
-    <a href="/2024/02/13/http1548195244xmlrpcphp/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2024/02/13/%E8%BD%AF%E6%B8%B2%E6%9F%93%E5%99%A8/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
@@ -162,7 +162,7 @@
     </a>
   
   
-    <a href="/2023/11/01/sample-5/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2023/11/01/lua%20%E5%88%A4%E7%A9%BAbug/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
       <div class="article-nav-title">xlua 和 unity 判空踩的坑</div>
     </a>
@@ -181,7 +181,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/aolixin/">aolixin</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/introduction/">introduction</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/uncategorized/">uncategorized</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Rendering/">Rendering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Unity/">Unity</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/aolixin/">aolixin</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/lua/">lua</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/others/">others</a></li></ul>
     </div>
   </div>
 
@@ -217,11 +217,11 @@
           </li>
         
           <li>
-            <a href="/2024/10/27/sample/">typora + 阿里云oss搭建个人博客</a>
+            <a href="/2024/10/27/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">typora + 阿里云oss搭建个人博客</a>
           </li>
         
           <li>
-            <a href="/2024/10/04/clion-%E7%BC%96%E8%AF%91-lua-2/">clion 编译 lua</a>
+            <a href="/2024/10/04/clion-%E7%BC%96%E8%AF%91-lua/">clion 编译 lua</a>
           </li>
         
           <li>
