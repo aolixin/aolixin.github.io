@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.21.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.21.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="-- 敖立鑫 2023.10.18开始，工程放在：github Custom Render Pipeline (catlikecoding.com) – 基于这个教程 srp渲染流程 渲染流程 创建commandBuffer 用buffer执行命令（配置buffer）如:buffer.ClearRenderTarget(true, true, Color.clear); 用context（上下文）">
 <meta property="og:type" content="article">
@@ -25,7 +25,7 @@
 <meta property="og:url" content="http://example.com/2023/10/28/SRP/index.html">
 <meta property="og:site_name" content="aolixin blog">
 <meta property="og:description" content="-- 敖立鑫 2023.10.18开始，工程放在：github Custom Render Pipeline (catlikecoding.com) – 基于这个教程 srp渲染流程 渲染流程 创建commandBuffer 用buffer执行命令（配置buffer）如:buffer.ClearRenderTarget(true, true, Color.clear); 用context（上下文）">
-<meta property="og:locale" content="zh_CN">
+<meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202310281452180.png">
 <meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202310281452429.png">
 <meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202310281452941.png">
@@ -52,7 +52,7 @@
 <link rel="canonical" href="http://example.com/2023/10/28/SRP/">
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2023/10/28/SRP/","path":"2023/10/28/SRP/","title":"unity SRP"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2023/10/28/SRP/","path":"2023/10/28/SRP/","title":"unity SRP"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>unity SRP | aolixin blog</title>
@@ -77,7 +77,10 @@
     <div class="column">
       <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏" role="button">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
@@ -91,13 +94,17 @@
   </div>
 
   <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
     </div>
   </div>
 </div>
 
 
 
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+  </ul>
+</nav>
 
 
 
@@ -110,17 +117,17 @@
     <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
-          文章目录
+          Table of Contents
         </li>
         <li class="sidebar-nav-overview">
-          站点概览
+          Overview
         </li>
       </ul>
 
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#srp%E6%B8%B2%E6%9F%93%E6%B5%81%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">srp渲染流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#drawingSettings"><span class="nav-number">1.1.</span> <span class="nav-text">drawingSettings</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ScriptableCullingParameters"><span class="nav-number">1.2.</span> <span class="nav-text">ScriptableCullingParameters</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#srp-%E4%B8%ADugui%E7%BB%98%E5%88%B6"><span class="nav-number">2.</span> <span class="nav-text">srp 中ugui绘制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#unity-%E6%89%B9%E5%A4%84%E7%90%86-Unity%E6%B8%B2%E6%9F%93%E4%BC%98%E5%8C%96%E7%9A%844%E7%A7%8D%E6%89%B9%E5%A4%84%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">unity 批处理 Unity渲染优化的4种批处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SRP-batcher"><span class="nav-number">3.1.</span> <span class="nav-text">SRP batcher</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GPU-Instancing"><span class="nav-number">3.2.</span> <span class="nav-text">GPU Instancing</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#srp-%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.2.1.</span> <span class="nav-text">srp 实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#srp-batcher%E5%92%8C-GPU-Instancing%E5%8C%BA%E5%88%AB"><span class="nav-number">3.3.</span> <span class="nav-text">srp batcher和 GPU Instancing区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dynamic-Batching"><span class="nav-number">3.4.</span> <span class="nav-text">Dynamic Batching</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shadows"><span class="nav-number">4.</span> <span class="nav-text">Shadows</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BB%E5%9B%BE"><span class="nav-number">4.1.</span> <span class="nav-text">类图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E6%88%90shadowMap"><span class="nav-number">4.2.</span> <span class="nav-text">生成shadowMap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E5%8D%87%E9%98%B4%E5%BD%B1%E8%B4%A8%E9%87%8F"><span class="nav-number">4.3.</span> <span class="nav-text">提升阴影质量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%B4%E5%BD%B1%E8%A3%81%E5%89%AA"><span class="nav-number">4.4.</span> <span class="nav-text">阴影裁剪</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#unity-default"><span class="nav-number">4.5.</span> <span class="nav-text">unity default</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#srp%E6%B8%B2%E6%9F%93%E6%B5%81%E7%A8%8B"><span class="nav-text">srp渲染流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#drawingSettings"><span class="nav-text">drawingSettings</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ScriptableCullingParameters"><span class="nav-text">ScriptableCullingParameters</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#srp-%E4%B8%ADugui%E7%BB%98%E5%88%B6"><span class="nav-text">srp 中ugui绘制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#unity-%E6%89%B9%E5%A4%84%E7%90%86-Unity%E6%B8%B2%E6%9F%93%E4%BC%98%E5%8C%96%E7%9A%844%E7%A7%8D%E6%89%B9%E5%A4%84%E7%90%86"><span class="nav-text">unity 批处理 Unity渲染优化的4种批处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SRP-batcher"><span class="nav-text">SRP batcher</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GPU-Instancing"><span class="nav-text">GPU Instancing</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#srp-%E5%AE%9E%E7%8E%B0"><span class="nav-text">srp 实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#srp-batcher%E5%92%8C-GPU-Instancing%E5%8C%BA%E5%88%AB"><span class="nav-text">srp batcher和 GPU Instancing区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dynamic-Batching"><span class="nav-text">Dynamic Batching</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shadows"><span class="nav-text">Shadows</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BB%E5%9B%BE"><span class="nav-text">类图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E6%88%90shadowMap"><span class="nav-text">生成shadowMap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E5%8D%87%E9%98%B4%E5%BD%B1%E8%B4%A8%E9%87%8F"><span class="nav-text">提升阴影质量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%B4%E5%BD%B1%E8%A3%81%E5%89%AA"><span class="nav-text">阴影裁剪</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#unity-default"><span class="nav-text">unity default</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -134,12 +141,12 @@
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
           <span class="site-state-item-count">10</span>
-          <span class="site-state-item-name">日志</span>
+          <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
         <span class="site-state-item-count">5</span>
-        <span class="site-state-item-name">分类</span>
+        <span class="site-state-item-name">categories</span>
       </div>
   </nav>
 </div>
@@ -164,7 +171,7 @@
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/10/28/SRP/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -192,22 +199,22 @@
       <span class="post-meta-item-icon">
         <i class="far fa-calendar"></i>
       </span>
-      <span class="post-meta-item-text">发表于</span>
+      <span class="post-meta-item-text">Posted on</span>
 
-      <time title="创建时间：2023-10-28 15:00:04" itemprop="dateCreated datePublished" datetime="2023-10-28T15:00:04+08:00">2023-10-28</time>
+      <time title="Created: 2023-10-28 15:00:04" itemprop="dateCreated datePublished" datetime="2023-10-28T15:00:04+08:00">2023-10-28</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-12-21 19:36:50" itemprop="dateModified" datetime="2024-12-21T19:36:50+08:00">2024-12-21</time>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-12-21 19:36:50" itemprop="dateModified" datetime="2024-12-21T19:36:50+08:00">2024-12-21</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
-      <span class="post-meta-item-text">分类于</span>
+      <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/aolixin/" itemprop="url" rel="index"><span itemprop="name">aolixin</span></a>
         </span>
@@ -593,7 +600,7 @@ FilterDirectionalShadow(positionSTS), shadow, global.cascadeBlend
     </span>
     <span class="author" itemprop="copyrightHolder">aolixin</span>
   </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
   </div>
 
     </div>
@@ -606,7 +613,7 @@ FilterDirectionalShadow(positionSTS), shadow, global.cascadeBlend
     <span class="toggle-line"></span>
   </div>
   <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="返回顶部">
+  <div class="back-to-top" role="button" aria-label="Back to top">
     <i class="fa fa-arrow-up fa-lg"></i>
     <span>0%</span>
   </div>
