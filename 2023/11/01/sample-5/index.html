@@ -4,23 +4,19 @@
   <meta charset="utf-8">
   
   
-  <title>clash 公司内网环境下, 配置代理 | Hexo</title>
+  <title>xlua 和 unity 判空踩的坑 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="起因是公司是内网环境, 只支持访问国内的一些网站 为了科学上网, 公司给出了一个 chrome 的插件, 通过插件去配置浏览器代理 但是当我用 Epic Games 在线下载 UE 的时候, 速度实在感人, 问了公司 IT 同学, IT 那边说让我去申请公司海外 vpn, 这太麻烦了! 于是乎, 我选择了自己配置代理软件 我自己笔记本用的是 clash for windows 这个代理软件 我在公">
+  <meta name="description" content="--敖立鑫 场景有些对象在 c# 删掉了，但是 lua 不知道 解决：判断对象为空可以用下面这个函数 123function IsNil(obj)return obj &#x3D;&#x3D; nil or obj:Equals(nil)end  Lua下对gameObject判空">
 <meta property="og:type" content="article">
-<meta property="og:title" content="clash 公司内网环境下, 配置代理">
-<meta property="og:url" content="http://example.com/2024/12/21/clash/index.html">
+<meta property="og:title" content="xlua 和 unity 判空踩的坑">
+<meta property="og:url" content="http://example.com/2023/11/01/sample-5/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="起因是公司是内网环境, 只支持访问国内的一些网站 为了科学上网, 公司给出了一个 chrome 的插件, 通过插件去配置浏览器代理 但是当我用 Epic Games 在线下载 UE 的时候, 速度实在感人, 问了公司 IT 同学, IT 那边说让我去申请公司海外 vpn, 这太麻烦了! 于是乎, 我选择了自己配置代理软件 我自己笔记本用的是 clash for windows 这个代理软件 我在公">
+<meta property="og:description" content="--敖立鑫 场景有些对象在 c# 删掉了，但是 lua 不知道 解决：判断对象为空可以用下面这个函数 123function IsNil(obj)return obj &#x3D;&#x3D; nil or obj:Equals(nil)end  Lua下对gameObject判空">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241221184908513.png">
-<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241221185018730.png">
-<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241221190002349.png">
-<meta property="article:published_time" content="2024-12-21T10:38:32.000Z">
-<meta property="article:modified_time" content="2024-12-21T11:03:46.385Z">
+<meta property="article:published_time" content="2023-11-01T05:44:16.000Z">
+<meta property="article:modified_time" content="2024-12-21T11:36:50.326Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241221184908513.png">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -75,12 +71,16 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="default-clash" class="h-entry article article-type-default" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-sample-5" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2024/12/21/clash/" class="article-date">
-  <time class="dt-published" datetime="2024-12-21T10:38:32.000Z" itemprop="datePublished">2024-12-21</time>
+    <a href="/2023/11/01/sample-5/" class="article-date">
+  <time class="dt-published" datetime="2023-11-01T05:44:16.000Z" itemprop="datePublished">2023-11-01</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/aolixin/">aolixin</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -89,7 +89,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      clash 公司内网环境下, 配置代理
+      xlua 和 unity 判空踩的坑
     </h1>
   
 
@@ -97,42 +97,17 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>起因是公司是内网环境, 只支持访问国内的一些网站</p>
-<p>为了科学上网, 公司给出了一个 chrome 的插件, 通过插件去配置浏览器代理</p>
-<p>但是当我用 Epic Games 在线下载 UE 的时候, 速度实在感人, 问了公司 IT 同学, IT 那边说让我去申请公司海外 vpn, 这太麻烦了!</p>
-<p>于是乎, 我选择了自己配置代理软件</p>
-<p>我自己笔记本用的是 clash for windows 这个代理软件</p>
-<p>我在公司电脑上配置好了之后, 成功解决全局代理的问题</p>
-<p>但是, 另一个问题发生了, 公司内网进不去了 !!!</p>
-<p>公司的 OA 系统, 包括一些 wiki, 都是在内网环境的 !!!, 为什么配置代理之后进不去了呢?</p>
-<p>于是我脑海中第一个解决办法是, 配置分流规则, 在访问公司内网的时候, 直接连接, 而不是走代理, 这个可以很方便的在 clash 内配置</p>
-<img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241221184908513.png" alt="image-20241221184908513" style="zoom: 50%;" />
+        <p>--敖立鑫</p>
+<h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>有些对象在 c# 删掉了，但是 lua 不知道</p>
+<h2 id="解决："><a href="#解决：" class="headerlink" title="解决："></a>解决：</h2><p>判断对象为空可以用下面这个函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function IsNil(obj)</span><br><span class="line">return obj == nil or obj:Equals(nil)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
 
-<img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241221185018730.png" alt="image-20241221185018730" style="zoom:50%;" />
-
-
-
-<p>也可以打开配置文件, 手动配置, 这里就不演示了</p>
-<p>但是当我配置完之后, 竟然没有用 !!!</p>
-<p>我很奇怪啊, 于是把 clash Proxies 切换成  Global, 还是进不去, why why why</p>
-<p>于是在前辈们的指导下, 我去查日志, 发现, 原来是 DNS 有问题 !</p>
-<p>公司是内网环境, 有自己的 DNS 服务器, 而 clash 有自己的 DNS 服务器, 这我的 IP 解析是失败的</p>
-<p>于是乎, 我查啊查, 发现, clash 有个 Mixin 功能, 可以在 clash DNS 基础上, 配置自己的 DNS 服务器</p>
-<p>所以解决方案如下</p>
-<ol>
-<li>在 “网络和 Internet” 下, 查看自己的 DNS 服务器地址</li>
-<li>配置到 clash Mixin 中 –&gt; <a target="_blank" rel="noopener" href="https://blog.csdn.net/YoungHong1992/article/details/133862017">https://blog.csdn.net/YoungHong1992/article/details/133862017</a></li>
-</ol>
-<img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241221190002349.png" alt="image-20241221190002349" style="zoom: 50%;" />
-
-
-
-<p>最后最后, 我们成功地, 在保留外网访问能力的同时, 畅通的访问公司内网</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_33205561/article/details/120952915">Lua下对gameObject判空</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/12/21/clash/" data-id="cm4y2ow0j0000j4u6ep278czx" data-title="clash 公司内网环境下, 配置代理" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2023/11/01/sample-5/" data-id="cm4y3ujym0007ygu600pdaejl" data-title="xlua 和 unity 判空踩的坑" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -142,10 +117,19 @@
     
 <nav id="article-nav">
   
+    <a href="/2023/11/08/sample-6/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          unity 实现 PBR
+        
+      </div>
+    </a>
   
-    <a href="/2024/12/17/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+  
+    <a href="/2023/10/31/sample-4/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Hello This is Shin</div>
+      <div class="article-nav-title">unity GC机制</div>
     </a>
   
 </nav>

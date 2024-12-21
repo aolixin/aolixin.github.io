@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>图形学处理旋转 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="-- 敖立鑫欧拉角优点  简单 直观  缺点  根据旋转顺序的不同,会导致不同的结果  会导致万向节死锁  万向节死锁举例 1首先确定手机的物体坐标系朝向，假设z轴与手机屏幕垂直（手机平放于桌面）指向上方，手机较短的一条边为x轴，较长的一条边为y轴（方向由手机尾部指向头部），物体坐标系的原点是手机左下角的顶点。（注意旋转顺序为zyx）绕z轴旋转任意角度（注意x和y轴也跟着一起旋转），再绕y轴旋转9">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图形学处理旋转">
+<meta property="og:url" content="http://example.com/2024/02/19/%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%A4%84%E7%90%86%E6%97%8B%E8%BD%AC-3/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="-- 敖立鑫欧拉角优点  简单 直观  缺点  根据旋转顺序的不同,会导致不同的结果  会导致万向节死锁  万向节死锁举例 1首先确定手机的物体坐标系朝向，假设z轴与手机屏幕垂直（手机平放于桌面）指向上方，手机较短的一条边为x轴，较长的一条边为y轴（方向由手机尾部指向头部），物体坐标系的原点是手机左下角的顶点。（注意旋转顺序为zyx）绕z轴旋转任意角度（注意x和y轴也跟着一起旋转），再绕y轴旋转9">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202739051.png">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219192444630.png">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202758348.png">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202840427.png">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202901373.png">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202926482.png">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219195101320.png">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202949520.png">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219203006435.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190312200542768.png">
+<meta property="article:published_time" content="2024-02-19T12:34:34.000Z">
+<meta property="article:modified_time" content="2024-12-21T11:36:50.326Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202739051.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-图形学处理旋转-3" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/02/19/%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%A4%84%E7%90%86%E6%97%8B%E8%BD%AC-3/" class="article-date">
+  <time class="dt-published" datetime="2024-02-19T12:34:34.000Z" itemprop="datePublished">2024-02-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/aolixin/">aolixin</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      图形学处理旋转
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="敖立鑫"><a href="#敖立鑫" class="headerlink" title="-- 敖立鑫"></a>-- 敖立鑫</h1><h2 id="欧拉角"><a href="#欧拉角" class="headerlink" title="欧拉角"></a>欧拉角</h2><p><strong>优点</strong></p>
+<ul>
+<li>简单</li>
+<li>直观</li>
+</ul>
+<p><strong>缺点</strong></p>
+<ul>
+<li><p>根据旋转顺序的不同,会导致不同的结果</p>
+</li>
+<li><p>会导致万向节死锁</p>
+</li>
+<li><p>万向节死锁举例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">首先确定手机的物体坐标系朝向，假设z轴与手机屏幕垂直（手机平放于桌面）指向上方，手机较短的一条边为x轴，较长的一条边为y轴（方向由手机尾部指向头部），物体坐标系的原点是手机左下角的顶点。（注意旋转顺序为zyx）绕z轴旋转任意角度（注意x和y轴也跟着一起旋转），再绕y轴旋转90°，再绕x轴旋转任意角度。通过多次尝试，会发现一个共同点：z轴永远是水平的， 通俗的说，手机永远也不会立起来（旋转形成的三维空间是固定的）！本来以为手机会指向任何方向，但实际上手机好像是被锁在桌面上，只能指向水平的某个方向，这个现象就称为万向锁。而如果绕y轴旋转不等于90°（1°也好89°也好），只要选择适当的绕x和z的角度，就可以让手机指向三维空间中的任何一个方向，手机是自由的（旋转产生的三维空间不会完全重叠），也就不会遇到万向锁现象。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="轴角"><a href="#轴角" class="headerlink" title="轴角"></a>轴角</h2><p>轴角的出现是为了避免万向节死锁问题 表示为 <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202739051.png" alt="image-20240219202739051"> R(n,θ) 为旋转矩阵 <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219192444630.png" alt="image-20240219192444630"> 推导过程 —&gt;<a target="_blank" rel="noopener" href="https://blog.csdn.net/u014265928/article/details/117170481">【机器人学】绕空间任意轴的旋转矩阵推导_绕任意轴旋转的旋转矩阵-CSDN博客</a></p>
+<h2 id="四元数"><a href="#四元数" class="headerlink" title="四元数"></a>四元数</h2><p>四元数主要是为了方便轴角的计算</p>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>四元数是一种复数的拓展 一个四元数有如下形式： <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202758348.png" alt="image-20240219202758348"> 其中，w 为实部，x，y，z为虚部</p>
+<h3 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h3><p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202840427.png" alt="image-20240219202840427"></p>
+<h3 id="处理旋转时"><a href="#处理旋转时" class="headerlink" title="处理旋转时:"></a>处理旋转时:</h3><ol>
+<li><strong>将待旋转 向量&#x2F;点 转换成纯四元数</strong></li>
+</ol>
+<p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202901373.png" alt="image-20240219202901373"></p>
+<ol start="2">
+<li><strong>根据轴角求出表示的旋转四元数 q</strong></li>
+</ol>
+<ul>
+<li>假设旋转用轴角表示为 (x，y，z，<em>θ)</em>, θ 的范围 [ -pi,pi ]</li>
+</ul>
+<p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202926482.png" alt="image-20240219202926482"> <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219195101320.png" alt="image-20240219195101320"></p>
+<ol start="3">
+<li><strong>计算 q 的共轭四元数 q</strong>*</li>
+</ol>
+<p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202949520.png" alt="image-20240219202949520"></p>
+<ol start="4">
+<li><strong>根据公式 v′′&#x3D;qv′q∗ 求出结果</strong></li>
+</ol>
+<p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219203006435.png" alt="image-20240219203006435"></p>
+<ol start="5">
+<li><strong>将上述过程转换为矩阵形式</strong></li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/20190312200542768.png" alt="img"> <strong>c++ 实现</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">// 旋转变换，围绕 (x, y, z) 矢量旋转 theta 角度</span><br><span class="line">inline static Mat4x4f matrix_set_rotate(float x, float y, float z, float theta) &#123;</span><br><span class="line">float qsin = (float)sin(theta * 0.5f);</span><br><span class="line">float qcos = (float)cos(theta * 0.5f);</span><br><span class="line">float w = qcos;</span><br><span class="line">Vec3f vec = vector_normalize(Vec3f(x, y, z));</span><br><span class="line">x = vec.x * qsin;</span><br><span class="line">y = vec.y * qsin;</span><br><span class="line">z = vec.z * qsin;</span><br><span class="line">Mat4x4f m;</span><br><span class="line">m.data[0][0] = 1 - 2 * y * y - 2 * z * z;</span><br><span class="line">m.data[1][0] = 2 * x * y - 2 * w * z;</span><br><span class="line">m.data[2][0] = 2 * x * z + 2 * w * y;</span><br><span class="line">m.data[0][1] = 2 * x * y + 2 * w * z;</span><br><span class="line">m.data[1][1] = 1 - 2 * x * x - 2 * z * z;</span><br><span class="line">m.data[2][1] = 2 * y * z - 2 * w * x;</span><br><span class="line">m.data[0][2] = 2 * x * z - 2 * w * y;</span><br><span class="line">m.data[1][2] = 2 * y * z + 2 * w * x;</span><br><span class="line">m.data[2][2] = 1 - 2 * x * x - 2 * y * y;</span><br><span class="line">m.data[0][3] = m.data[1][3] = m.data[2][3] = 0.0f;</span><br><span class="line">m.data[3][0] = m.data[3][1] = m.data[3][2] = 0.0f;</span><br><span class="line">m.data[3][3] = 1.0f;</span><br><span class="line">return m;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>推导见 —&gt; <a target="_blank" rel="noopener" href="https://blog.csdn.net/u014265928/article/details/117161701">【机器人学】四元数与旋转矩阵的相互转换_四元数转旋转矩阵-CSDN博客</a></p>
+<h2 id="四元数-和-旋转矩阵对比"><a href="#四元数-和-旋转矩阵对比" class="headerlink" title="四元数 和 旋转矩阵对比"></a>四元数 和 旋转矩阵对比</h2><ul>
+<li>四元数在计算机内更紧凑</li>
+<li>四元数用 4 个变量即可表示旋转,而轴角旋转矩阵需要 9 个</li>
+<li>四元数计算效率更高</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/02/19/%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%A4%84%E7%90%86%E6%97%8B%E8%BD%AC-3/" data-id="cm4y3ujyo000fygu6abfpddto" data-title="图形学处理旋转" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/05/15/jenkins-unity-%E8%87%AA%E5%8A%A8%E6%89%93%E5%8C%85/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          jenkins + unity 自动打包
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/02/13/http1548195244xmlrpcphp/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">c++ 软渲染器</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/aolixin/">aolixin</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/introduction/">introduction</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/uncategorized/">uncategorized</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/12/">December 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/10/">October 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">February 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">November 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">October 2023</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/12/21/clash/">clash 公司内网环境下, 配置代理</a>
+          </li>
+        
+          <li>
+            <a href="/2024/12/17/hello-world/">Hello This is Shin</a>
+          </li>
+        
+          <li>
+            <a href="/2024/10/27/sample/">typora + 阿里云oss搭建个人博客</a>
+          </li>
+        
+          <li>
+            <a href="/2024/10/04/clion-%E7%BC%96%E8%AF%91-lua-2/">clion 编译 lua</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/15/jenkins-unity-%E8%87%AA%E5%8A%A8%E6%89%93%E5%8C%85/">jenkins + unity 自动打包</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
