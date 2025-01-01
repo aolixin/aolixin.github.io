@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="-- 敖立鑫欧拉角优点  简单 直观  缺点  根据旋转顺序的不同,会导致不同的结果  会导致万向节死锁  万向节死锁举例 1首先确定手机的物体坐标系朝向，假设z轴与手机屏幕垂直（手机平放于桌面）指向上方，手机较短的一条边为x轴，较长的一条边为y轴（方向由手机尾部指向头部），物体坐标系的原点是手机左下角的顶点。（注意旋转顺序为zyx）绕z轴旋转任意角度（注意x和y轴也跟着一起旋转），再绕y轴旋转9">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图形学处理旋转">
+<meta property="og:url" content="http://example.com/2024/02/19/%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%A4%84%E7%90%86%E6%97%8B%E8%BD%AC/index.html">
+<meta property="og:site_name" content="aolixin blog">
+<meta property="og:description" content="-- 敖立鑫欧拉角优点  简单 直观  缺点  根据旋转顺序的不同,会导致不同的结果  会导致万向节死锁  万向节死锁举例 1首先确定手机的物体坐标系朝向，假设z轴与手机屏幕垂直（手机平放于桌面）指向上方，手机较短的一条边为x轴，较长的一条边为y轴（方向由手机尾部指向头部），物体坐标系的原点是手机左下角的顶点。（注意旋转顺序为zyx）绕z轴旋转任意角度（注意x和y轴也跟着一起旋转），再绕y轴旋转9">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202739051.png">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219192444630.png">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202758348.png">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202840427.png">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202901373.png">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202926482.png">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219195101320.png">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202949520.png">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219203006435.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190312200542768.png">
+<meta property="article:published_time" content="2024-02-19T12:34:34.000Z">
+<meta property="article:modified_time" content="2024-12-21T11:54:43.257Z">
+<meta property="article:author" content="aolixin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202739051.png">
+
+<link rel="canonical" href="http://example.com/2024/02/19/%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%A4%84%E7%90%86%E6%97%8B%E8%BD%AC/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>图形学处理旋转 | aolixin blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">aolixin blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/02/19/%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%A4%84%E7%90%86%E6%97%8B%E8%BD%AC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="aolixin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="aolixin blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          图形学处理旋转
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-02-19 20:34:34" itemprop="dateCreated datePublished" datetime="2024-02-19T20:34:34+08:00">2024-02-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-21 19:54:43" itemprop="dateModified" datetime="2024-12-21T19:54:43+08:00">2024-12-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Rendering/" itemprop="url" rel="index"><span itemprop="name">Rendering</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>1.4k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="敖立鑫"><a href="#敖立鑫" class="headerlink" title="-- 敖立鑫"></a>-- 敖立鑫</h1><h2 id="欧拉角"><a href="#欧拉角" class="headerlink" title="欧拉角"></a>欧拉角</h2><p><strong>优点</strong></p>
+<ul>
+<li>简单</li>
+<li>直观</li>
+</ul>
+<p><strong>缺点</strong></p>
+<ul>
+<li><p>根据旋转顺序的不同,会导致不同的结果</p>
+</li>
+<li><p>会导致万向节死锁</p>
+</li>
+<li><p>万向节死锁举例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">首先确定手机的物体坐标系朝向，假设z轴与手机屏幕垂直（手机平放于桌面）指向上方，手机较短的一条边为x轴，较长的一条边为y轴（方向由手机尾部指向头部），物体坐标系的原点是手机左下角的顶点。（注意旋转顺序为zyx）绕z轴旋转任意角度（注意x和y轴也跟着一起旋转），再绕y轴旋转90°，再绕x轴旋转任意角度。通过多次尝试，会发现一个共同点：z轴永远是水平的， 通俗的说，手机永远也不会立起来（旋转形成的三维空间是固定的）！本来以为手机会指向任何方向，但实际上手机好像是被锁在桌面上，只能指向水平的某个方向，这个现象就称为万向锁。而如果绕y轴旋转不等于90°（1°也好89°也好），只要选择适当的绕x和z的角度，就可以让手机指向三维空间中的任何一个方向，手机是自由的（旋转产生的三维空间不会完全重叠），也就不会遇到万向锁现象。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="轴角"><a href="#轴角" class="headerlink" title="轴角"></a>轴角</h2><p>轴角的出现是为了避免万向节死锁问题 表示为 <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202739051.png" alt="image-20240219202739051"> R(n,θ) 为旋转矩阵 <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219192444630.png" alt="image-20240219192444630"> 推导过程 —&gt;<a target="_blank" rel="noopener" href="https://blog.csdn.net/u014265928/article/details/117170481">【机器人学】绕空间任意轴的旋转矩阵推导_绕任意轴旋转的旋转矩阵-CSDN博客</a></p>
+<h2 id="四元数"><a href="#四元数" class="headerlink" title="四元数"></a>四元数</h2><p>四元数主要是为了方便轴角的计算</p>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>四元数是一种复数的拓展 一个四元数有如下形式： <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202758348.png" alt="image-20240219202758348"> 其中，w 为实部，x，y，z为虚部</p>
+<h3 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h3><p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202840427.png" alt="image-20240219202840427"></p>
+<h3 id="处理旋转时"><a href="#处理旋转时" class="headerlink" title="处理旋转时:"></a>处理旋转时:</h3><ol>
+<li><strong>将待旋转 向量&#x2F;点 转换成纯四元数</strong></li>
+</ol>
+<p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202901373.png" alt="image-20240219202901373"></p>
+<ol start="2">
+<li><strong>根据轴角求出表示的旋转四元数 q</strong></li>
+</ol>
+<ul>
+<li>假设旋转用轴角表示为 (x，y，z，<em>θ)</em>, θ 的范围 [ -pi,pi ]</li>
+</ul>
+<p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202926482.png" alt="image-20240219202926482"> <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219195101320.png" alt="image-20240219195101320"></p>
+<ol start="3">
+<li><strong>计算 q 的共轭四元数 q</strong>*</li>
+</ol>
+<p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219202949520.png" alt="image-20240219202949520"></p>
+<ol start="4">
+<li><strong>根据公式 v′′&#x3D;qv′q∗ 求出结果</strong></li>
+</ol>
+<p><img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20240219203006435.png" alt="image-20240219203006435"></p>
+<ol start="5">
+<li><strong>将上述过程转换为矩阵形式</strong></li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/20190312200542768.png" alt="img"> <strong>c++ 实现</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">// 旋转变换，围绕 (x, y, z) 矢量旋转 theta 角度</span><br><span class="line">inline static Mat4x4f matrix_set_rotate(float x, float y, float z, float theta) &#123;</span><br><span class="line">float qsin = (float)sin(theta * 0.5f);</span><br><span class="line">float qcos = (float)cos(theta * 0.5f);</span><br><span class="line">float w = qcos;</span><br><span class="line">Vec3f vec = vector_normalize(Vec3f(x, y, z));</span><br><span class="line">x = vec.x * qsin;</span><br><span class="line">y = vec.y * qsin;</span><br><span class="line">z = vec.z * qsin;</span><br><span class="line">Mat4x4f m;</span><br><span class="line">m.data[0][0] = 1 - 2 * y * y - 2 * z * z;</span><br><span class="line">m.data[1][0] = 2 * x * y - 2 * w * z;</span><br><span class="line">m.data[2][0] = 2 * x * z + 2 * w * y;</span><br><span class="line">m.data[0][1] = 2 * x * y + 2 * w * z;</span><br><span class="line">m.data[1][1] = 1 - 2 * x * x - 2 * z * z;</span><br><span class="line">m.data[2][1] = 2 * y * z - 2 * w * x;</span><br><span class="line">m.data[0][2] = 2 * x * z - 2 * w * y;</span><br><span class="line">m.data[1][2] = 2 * y * z + 2 * w * x;</span><br><span class="line">m.data[2][2] = 1 - 2 * x * x - 2 * y * y;</span><br><span class="line">m.data[0][3] = m.data[1][3] = m.data[2][3] = 0.0f;</span><br><span class="line">m.data[3][0] = m.data[3][1] = m.data[3][2] = 0.0f;</span><br><span class="line">m.data[3][3] = 1.0f;</span><br><span class="line">return m;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>推导见 —&gt; <a target="_blank" rel="noopener" href="https://blog.csdn.net/u014265928/article/details/117161701">【机器人学】四元数与旋转矩阵的相互转换_四元数转旋转矩阵-CSDN博客</a></p>
+<h2 id="四元数-和-旋转矩阵对比"><a href="#四元数-和-旋转矩阵对比" class="headerlink" title="四元数 和 旋转矩阵对比"></a>四元数 和 旋转矩阵对比</h2><ul>
+<li>四元数在计算机内更紧凑</li>
+<li>四元数用 4 个变量即可表示旋转,而轴角旋转矩阵需要 9 个</li>
+<li>四元数计算效率更高</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/02/13/%E8%BD%AF%E6%B8%B2%E6%9F%93%E5%99%A8/" rel="prev" title="c++ 软渲染器">
+      <i class="fa fa-chevron-left"></i> c++ 软渲染器
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/05/15/jenkins-unity-%E8%87%AA%E5%8A%A8%E6%89%93%E5%8C%85/" rel="next" title="jenkins + unity 自动打包">
+      jenkins + unity 自动打包 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%96%E7%AB%8B%E9%91%AB"><span class="nav-text">-- 敖立鑫</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AC%A7%E6%8B%89%E8%A7%92"><span class="nav-text">欧拉角</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%B4%E8%A7%92"><span class="nav-text">轴角</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E5%85%83%E6%95%B0"><span class="nav-text">四元数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%A7%E8%B4%A8"><span class="nav-text">性质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E6%97%8B%E8%BD%AC%E6%97%B6"><span class="nav-text">处理旋转时:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E5%85%83%E6%95%B0-%E5%92%8C-%E6%97%8B%E8%BD%AC%E7%9F%A9%E9%98%B5%E5%AF%B9%E6%AF%94"><span class="nav-text">四元数 和 旋转矩阵对比</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="aolixin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">aolixin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/aolixin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;aolixin" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:2876589230@qq.com" title="E-Mail → mailto:2876589230@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aolixin</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">36k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">33 mins.</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

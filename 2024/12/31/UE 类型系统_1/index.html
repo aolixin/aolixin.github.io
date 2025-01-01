@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="UE 类型系统 (一)如题, 这是一篇关于 UE 类型系统的学习笔记, 有很多个人理解, 或许有不准确或者错误的地方, 如果有人看到, 欢迎指正 主要参考大钊博客 –&gt; https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;fjz13 首先, 类型系统有什么用呢? GC，反射，序列化 …… 可见, 类型系统是游戏引擎中很重要的基石">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UE 类型系统 (一)">
+<meta property="og:url" content="http://example.com/2024/12/31/UE%20%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F_1/index.html">
+<meta property="og:site_name" content="aolixin blog">
+<meta property="og:description" content="UE 类型系统 (一)如题, 这是一篇关于 UE 类型系统的学习笔记, 有很多个人理解, 或许有不准确或者错误的地方, 如果有人看到, 欢迎指正 主要参考大钊博客 –&gt; https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;fjz13 首先, 类型系统有什么用呢? GC，反射，序列化 …… 可见, 类型系统是游戏引擎中很重要的基石">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-12-31T06:41:05.059Z">
+<meta property="article:modified_time" content="2025-01-01T05:31:53.617Z">
+<meta property="article:author" content="aolixin">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2024/12/31/UE%20%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F_1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>UE 类型系统 (一) | aolixin blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">aolixin blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/31/UE%20%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F_1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="aolixin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="aolixin blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          UE 类型系统 (一)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-12-31 14:41:05" itemprop="dateCreated datePublished" datetime="2024-12-31T14:41:05+08:00">2024-12-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-01-01 13:31:53" itemprop="dateModified" datetime="2025-01-01T13:31:53+08:00">2025-01-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Unreal/" itemprop="url" rel="index"><span itemprop="name">Unreal</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>14k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>13 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="UE-类型系统-一"><a href="#UE-类型系统-一" class="headerlink" title="UE 类型系统 (一)"></a>UE 类型系统 (一)</h1><p>如题, 这是一篇关于 UE 类型系统的学习笔记, 有很多个人理解, 或许有不准确或者错误的地方, 如果有人看到, 欢迎指正</p>
+<p><strong>主要参考大钊博客</strong> –&gt; <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/fjz13">https://www.zhihu.com/people/fjz13</a></p>
+<p>首先, 类型系统有什么用呢?</p>
+<p>GC，反射，序列化 ……</p>
+<p>可见, 类型系统是游戏引擎中很重要的基石</p>
+<span id="more"></span>
+
+
+
+<h2 id="HUT-UBT"><a href="#HUT-UBT" class="headerlink" title="HUT UBT"></a>HUT UBT</h2><p>首先从这个看起</p>
+<p>UE 的 GC 采用的方案是工具生成这么个方案</p>
+<p>解释一下就是: 在C++源文件中用空的宏做标记，然后用UHT分析生成generated.h&#x2F;.cpp文件，之后再一起编译。</p>
+<p>一些常用的宏: UCLASS, USTRUCT, UFUNCTION, UPROPERTY, UENUM</p>
+<p><strong>试验一下</strong></p>
+<p>先看最常用的 UObject</p>
+<p>新建一个 UObject类, 命名为 UAlxObject</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// Fill out your copyright notice in the Description page of Project Settings.</span><br><span class="line"></span><br><span class="line">#pragma once</span><br><span class="line"></span><br><span class="line">#include &quot;CoreMinimal.h&quot;</span><br><span class="line">#include &quot;UObject/Object.h&quot;</span><br><span class="line">#include &quot;AlxObject.generated.h&quot;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * </span><br><span class="line"> */</span><br><span class="line">UCLASS()</span><br><span class="line">class TESTPROJ1_API UAlxObject : public UObject</span><br><span class="line">&#123;</span><br><span class="line">   GENERATED_BODY()</span><br><span class="line">public:</span><br><span class="line">   UPROPERTY()</span><br><span class="line">   int data1;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>编译一下生成了 AlxObject.generated.h 和 AlxObject.generated.cpp</p>
+<p><strong>AlxObject.generated.h</strong> </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">// Copyright Epic Games, Inc. All Rights Reserved.</span><br><span class="line">/*===========================================================================</span><br><span class="line">   Generated code exported from UnrealHeaderTool.</span><br><span class="line">   DO NOT modify this manually! Edit the corresponding .h files instead!</span><br><span class="line">===========================================================================*/</span><br><span class="line"></span><br><span class="line">// IWYU pragma: private, include &quot;AlxObject.h&quot;</span><br><span class="line">#include &quot;UObject/ObjectMacros.h&quot;</span><br><span class="line">#include &quot;UObject/ScriptMacros.h&quot;</span><br><span class="line"></span><br><span class="line">PRAGMA_DISABLE_DEPRECATION_WARNINGS</span><br><span class="line">#ifdef TESTPROJ1_AlxObject_generated_h</span><br><span class="line">#error &quot;AlxObject.generated.h already included, missing &#x27;#pragma once&#x27; in AlxObject.h&quot;</span><br><span class="line">#endif</span><br><span class="line">#define TESTPROJ1_AlxObject_generated_h</span><br><span class="line"></span><br><span class="line">#define FID_Documents_work_unrealProject_TestProj1_Source_TestProj1_AlxObject_h_15_INCLASS_NO_PURE_DECLS \</span><br><span class="line">private: \</span><br><span class="line">   static void StaticRegisterNativesUAlxObject(); \</span><br><span class="line">   friend struct Z_Construct_UClass_UAlxObject_Statics; \</span><br><span class="line">public: \</span><br><span class="line">   DECLARE_CLASS(UAlxObject, UObject, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT(&quot;/Script/TestProj1&quot;), NO_API) \</span><br><span class="line">   DECLARE_SERIALIZER(UAlxObject)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#define FID_Documents_work_unrealProject_TestProj1_Source_TestProj1_AlxObject_h_15_ENHANCED_CONSTRUCTORS \</span><br><span class="line">   /** Standard constructor, called after all reflected properties have been initialized */ \</span><br><span class="line">   NO_API UAlxObject(const FObjectInitializer&amp; ObjectInitializer = FObjectInitializer::Get()); \</span><br><span class="line">private: \</span><br><span class="line">   /** Private move- and copy-constructors, should never be used */ \</span><br><span class="line">   UAlxObject(UAlxObject&amp;&amp;); \</span><br><span class="line">   UAlxObject(const UAlxObject&amp;); \</span><br><span class="line">public: \</span><br><span class="line">   DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UAlxObject); \</span><br><span class="line">   DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UAlxObject); \</span><br><span class="line">   DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UAlxObject) \</span><br><span class="line">   NO_API virtual ~UAlxObject();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#define FID_Documents_work_unrealProject_TestProj1_Source_TestProj1_AlxObject_h_12_PROLOG</span><br><span class="line">#define FID_Documents_work_unrealProject_TestProj1_Source_TestProj1_AlxObject_h_15_GENERATED_BODY \</span><br><span class="line">PRAGMA_DISABLE_DEPRECATION_WARNINGS \</span><br><span class="line">public: \</span><br><span class="line">   FID_Documents_work_unrealProject_TestProj1_Source_TestProj1_AlxObject_h_15_INCLASS_NO_PURE_DECLS \</span><br><span class="line">   FID_Documents_work_unrealProject_TestProj1_Source_TestProj1_AlxObject_h_15_ENHANCED_CONSTRUCTORS \</span><br><span class="line">private: \</span><br><span class="line">PRAGMA_ENABLE_DEPRECATION_WARNINGS</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">template&lt;&gt; TESTPROJ1_API UClass* StaticClass&lt;class UAlxObject&gt;();</span><br><span class="line"></span><br><span class="line">#undef CURRENT_FILE_ID</span><br><span class="line">#define CURRENT_FILE_ID FID_Documents_work_unrealProject_TestProj1_Source_TestProj1_AlxObject_h</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">PRAGMA_ENABLE_DEPRECATION_WARNINGS</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>AlxObject.generated.cpp</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line">// Copyright Epic Games, Inc. All Rights Reserved.</span><br><span class="line">/*===========================================================================</span><br><span class="line">   Generated code exported from UnrealHeaderTool.</span><br><span class="line">   DO NOT modify this manually! Edit the corresponding .h files instead!</span><br><span class="line">===========================================================================*/</span><br><span class="line"></span><br><span class="line">#include &quot;UObject/GeneratedCppIncludes.h&quot;</span><br><span class="line">#include &quot;TestProj1/AlxObject.h&quot;</span><br><span class="line">PRAGMA_DISABLE_DEPRECATION_WARNINGS</span><br><span class="line">void EmptyLinkFunctionForGeneratedCodeAlxObject() &#123;&#125;</span><br><span class="line"></span><br><span class="line">// Begin Cross Module References</span><br><span class="line">COREUOBJECT_API UClass* Z_Construct_UClass_UObject();</span><br><span class="line">TESTPROJ1_API UClass* Z_Construct_UClass_UAlxObject();</span><br><span class="line">TESTPROJ1_API UClass* Z_Construct_UClass_UAlxObject_NoRegister();</span><br><span class="line">UPackage* Z_Construct_UPackage__Script_TestProj1();</span><br><span class="line">// End Cross Module References</span><br><span class="line"></span><br><span class="line">// Begin Class UAlxObject</span><br><span class="line">void UAlxObject::StaticRegisterNativesUAlxObject()</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line">IMPLEMENT_CLASS_NO_AUTO_REGISTRATION(UAlxObject);</span><br><span class="line">UClass* Z_Construct_UClass_UAlxObject_NoRegister()</span><br><span class="line">&#123;</span><br><span class="line">   return UAlxObject::StaticClass();</span><br><span class="line">&#125;</span><br><span class="line">struct Z_Construct_UClass_UAlxObject_Statics</span><br><span class="line">&#123;</span><br><span class="line">#if WITH_METADATA</span><br><span class="line">   static constexpr UECodeGen_Private::FMetaDataPairParam Class_MetaDataParams[] = &#123;</span><br><span class="line">#if !UE_BUILD_SHIPPING</span><br><span class="line">      &#123; &quot;Comment&quot;, &quot;/**\n * \n */&quot; &#125;,</span><br><span class="line">#endif</span><br><span class="line">      &#123; &quot;IncludePath&quot;, &quot;AlxObject.h&quot; &#125;,</span><br><span class="line">      &#123; &quot;ModuleRelativePath&quot;, &quot;AlxObject.h&quot; &#125;,</span><br><span class="line">   &#125;;</span><br><span class="line">   static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_data1_MetaData[] = &#123;</span><br><span class="line">      &#123; &quot;ModuleRelativePath&quot;, &quot;AlxObject.h&quot; &#125;,</span><br><span class="line">   &#125;;</span><br><span class="line">#endif // WITH_METADATA</span><br><span class="line">   static const UECodeGen_Private::FIntPropertyParams NewProp_data1;</span><br><span class="line">   static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];</span><br><span class="line">   static UObject* (*const DependentSingletons[])();</span><br><span class="line">   static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = &#123;</span><br><span class="line">      TCppClassTypeTraits&lt;UAlxObject&gt;::IsAbstract,</span><br><span class="line">   &#125;;</span><br><span class="line">   static const UECodeGen_Private::FClassParams ClassParams;</span><br><span class="line">&#125;;</span><br><span class="line">const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_UAlxObject_Statics::NewProp_data1 = &#123; &quot;data1&quot;, nullptr, (EPropertyFlags)0x0010000000000000, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UAlxObject, data1), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_data1_MetaData), NewProp_data1_MetaData) &#125;;</span><br><span class="line">const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UAlxObject_Statics::PropPointers[] = &#123;</span><br><span class="line">   (const UECodeGen_Private::FPropertyParamsBase*)&amp;Z_Construct_UClass_UAlxObject_Statics::NewProp_data1,</span><br><span class="line">&#125;;</span><br><span class="line">static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_UAlxObject_Statics::PropPointers) &lt; 2048);</span><br><span class="line">UObject* (*const Z_Construct_UClass_UAlxObject_Statics::DependentSingletons[])() = &#123;</span><br><span class="line">   (UObject* (*)())Z_Construct_UClass_UObject,</span><br><span class="line">   (UObject* (*)())Z_Construct_UPackage__Script_TestProj1,</span><br><span class="line">&#125;;</span><br><span class="line">static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_UAlxObject_Statics::DependentSingletons) &lt; 16);</span><br><span class="line">const UECodeGen_Private::FClassParams Z_Construct_UClass_UAlxObject_Statics::ClassParams = &#123;</span><br><span class="line">   &amp;UAlxObject::StaticClass,</span><br><span class="line">   nullptr,</span><br><span class="line">   &amp;StaticCppClassTypeInfo,</span><br><span class="line">   DependentSingletons,</span><br><span class="line">   nullptr,</span><br><span class="line">   Z_Construct_UClass_UAlxObject_Statics::PropPointers,</span><br><span class="line">   nullptr,</span><br><span class="line">   UE_ARRAY_COUNT(DependentSingletons),</span><br><span class="line">   0,</span><br><span class="line">   UE_ARRAY_COUNT(Z_Construct_UClass_UAlxObject_Statics::PropPointers),</span><br><span class="line">   0,</span><br><span class="line">   0x001000A0u,</span><br><span class="line">   METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UAlxObject_Statics::Class_MetaDataParams), Z_Construct_UClass_UAlxObject_Statics::Class_MetaDataParams)</span><br><span class="line">&#125;;</span><br><span class="line">UClass* Z_Construct_UClass_UAlxObject()</span><br><span class="line">&#123;</span><br><span class="line">   if (!Z_Registration_Info_UClass_UAlxObject.OuterSingleton)</span><br><span class="line">   &#123;</span><br><span class="line">      UECodeGen_Private::ConstructUClass(Z_Registration_Info_UClass_UAlxObject.OuterSingleton, Z_Construct_UClass_UAlxObject_Statics::ClassParams);</span><br><span class="line">   &#125;</span><br><span class="line">   return Z_Registration_Info_UClass_UAlxObject.OuterSingleton;</span><br><span class="line">&#125;</span><br><span class="line">template&lt;&gt; TESTPROJ1_API UClass* StaticClass&lt;UAlxObject&gt;()</span><br><span class="line">&#123;</span><br><span class="line">   return UAlxObject::StaticClass();</span><br><span class="line">&#125;</span><br><span class="line">UAlxObject::UAlxObject(const FObjectInitializer&amp; ObjectInitializer) : Super(ObjectInitializer) &#123;&#125;</span><br><span class="line">DEFINE_VTABLE_PTR_HELPER_CTOR(UAlxObject);</span><br><span class="line">UAlxObject::~UAlxObject() &#123;&#125;</span><br><span class="line">// End Class UAlxObject</span><br><span class="line"></span><br><span class="line">// Begin Registration</span><br><span class="line">struct Z_CompiledInDeferFile_FID_Documents_work_unrealProject_TestProj1_Source_TestProj1_AlxObject_h_Statics</span><br><span class="line">&#123;</span><br><span class="line">   static constexpr FClassRegisterCompiledInInfo ClassInfo[] = &#123;</span><br><span class="line">      &#123; Z_Construct_UClass_UAlxObject, UAlxObject::StaticClass, TEXT(&quot;UAlxObject&quot;), &amp;Z_Registration_Info_UClass_UAlxObject, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UAlxObject), 531443262U) &#125;,</span><br><span class="line">   &#125;;</span><br><span class="line">&#125;;</span><br><span class="line">static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Documents_work_unrealProject_TestProj1_Source_TestProj1_AlxObject_h_1518281140(TEXT(&quot;/Script/TestProj1&quot;),</span><br><span class="line">   Z_CompiledInDeferFile_FID_Documents_work_unrealProject_TestProj1_Source_TestProj1_AlxObject_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Documents_work_unrealProject_TestProj1_Source_TestProj1_AlxObject_h_Statics::ClassInfo),</span><br><span class="line">   nullptr, 0,</span><br><span class="line">   nullptr, 0);</span><br><span class="line">// End Registration</span><br><span class="line">PRAGMA_ENABLE_DEPRECATION_WARNINGS</span><br></pre></td></tr></table></figure>
+
+
+
+<p>尝试理解一下这两个文件</p>
+<p>从 .h 的 **GENERATED_BODY() **开始, 这个宏做了一些替换</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#define GENERATED_BODY(...) BODY_MACRO_COMBINE(CURRENT_FILE_ID,_,__LINE__,_GENERATED_BODY);</span><br><span class="line"></span><br><span class="line">#define BODY_MACRO_COMBINE(A,B,C,D) BODY_MACRO_COMBINE_INNER(A,B,C,D)</span><br><span class="line"></span><br><span class="line">#define BODY_MACRO_COMBINE_INNER(A,B,C,D) A##B##C##D</span><br></pre></td></tr></table></figure>
+
+<p>其中</p>
+<ol>
+<li><strong>CURRENT_FILE_ID</strong> 定义在 .gen.h 中</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#define CURRENT_FILE_ID FID_Documents_work_unrealProject_TestProj1_Source_TestProj1_AlxObject_h</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>_<em>Line</em> _ 是 c 标准库里的东西</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    std::cout&lt;&lt;__LINE__&lt;&lt;std::endl; // output -- 4</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>最终经过几层替换, 生成了一个这个 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FID_Documents_work_unrealProject_TestProj1_Source_TestProj1_AlxObject_h_15_GENERATED_BODY</span><br></pre></td></tr></table></figure>
+
+<p>然后这个宏再做替换</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#define FID_Documents_work_unrealProject_TestProj1_Source_TestProj1_AlxObject_h_15_GENERATED_BODY \</span><br><span class="line">PRAGMA_DISABLE_DEPRECATION_WARNINGS \</span><br><span class="line">public: \</span><br><span class="line">   FID_Documents_work_unrealProject_TestProj1_Source_TestProj1_AlxObject_h_15_INCLASS_NO_PURE_DECLS \</span><br><span class="line">   FID_Documents_work_unrealProject_TestProj1_Source_TestProj1_AlxObject_h_15_ENHANCED_CONSTRUCTORS \</span><br><span class="line">private: \</span><br><span class="line">PRAGMA_ENABLE_DEPRECATION_WARNINGS</span><br></pre></td></tr></table></figure>
+
+<p>其中, 关注    FID_Documents_work_unrealProject_TestProj1_Source_TestProj1_AlxObject_h_15_INCLASS_NO_PURE_DECLS <br>   FID_Documents_work_unrealProject_TestProj1_Source_TestProj1_AlxObject_h_15_ENHANCED_CONSTRUCTORS \ 这两个宏</p>
+<p>先看 FID_Documents_work_unrealProject_TestProj1_Source_TestProj1_AlxObject_h_15_INCLASS_NO_PURE_DECLS</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#define FID_Documents_work_unrealProject_TestProj1_Source_TestProj1_AlxObject_h_15_INCLASS_NO_PURE_DECLS \</span><br><span class="line">private: \</span><br><span class="line">   static void StaticRegisterNativesUAlxObject(); \</span><br><span class="line">   friend struct Z_Construct_UClass_UAlxObject_Statics; \</span><br><span class="line">public: \</span><br><span class="line">   DECLARE_CLASS(UAlxObject, UObject, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT(&quot;/Script/TestProj1&quot;), NO_API) \</span><br><span class="line">   DECLARE_SERIALIZER(UAlxObject)</span><br></pre></td></tr></table></figure>
+
+<p>分析一下: </p>
+<ol>
+<li><strong>StaticRegisterNativesUAlxObject</strong>:</li>
+</ol>
+<p>空函数</p>
+<ol start="2">
+<li><strong>Z_Construct_UClass_UAlxObject_Statics</strong>:</li>
+</ol>
+<p>这个的话, 是一个友元结构体, 其定义可以在 gen.cpp 中找到</p>
+<p>这个结构体是一个数据类, 定义了一些 static const 类型的变量, 以我们 UAlxObject  为例, 他生成了如下的变量</p>
+<p>因为这些变量是 static const 类型变量, 所以会在运行开始时就初始化</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// metadata</span><br><span class="line">static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_data1_MetaData[] = &#123;</span><br><span class="line">   &#123; &quot;ModuleRelativePath&quot;, &quot;AlxObject.h&quot; &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[]; // 存储所有 prop</span><br><span class="line">static const UECodeGen_Private::FIntPropertyParams NewProp_data1; // 存储 data1 的信息</span><br><span class="line">static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = &#123;</span><br><span class="line">	TCppClassTypeTraits&lt;UAlxObject&gt;::IsAbstract,</span><br><span class="line">&#125;;</span><br><span class="line">static const UECodeGen_Private::FClassParams ClassParams; // class 本身的信息</span><br></pre></td></tr></table></figure>
+
+<p>这些变量类型都在 UObjectGlobal.h 中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">struct FGenericPropertyParams // : FPropertyParamsBaseWithOffset</span><br><span class="line">   &#123;</span><br><span class="line">      const char*      NameUTF8;</span><br><span class="line">      const char*       RepNotifyFuncUTF8;</span><br><span class="line">      EPropertyFlags    PropertyFlags;</span><br><span class="line">      EPropertyGenFlags Flags;</span><br><span class="line">      EObjectFlags     ObjectFlags;</span><br><span class="line">      SetterFuncPtr  SetterFunc;</span><br><span class="line">      GetterFuncPtr  GetterFunc;</span><br><span class="line">      uint16           ArrayDim;</span><br><span class="line">      uint16           Offset;</span><br><span class="line">#if WITH_METADATA</span><br><span class="line">      uint16                              NumMetaData;</span><br><span class="line">      const FMetaDataPairParam*           MetaDataArray;</span><br><span class="line">#endif</span><br><span class="line">   &#125;;</span><br><span class="line">   </span><br><span class="line">   ...</span><br><span class="line">   typedef FGenericPropertyParams FIntPropertyParams;</span><br><span class="line">   ...</span><br><span class="line">   </span><br><span class="line">   </span><br><span class="line">   struct FClassParams</span><br><span class="line">   &#123;</span><br><span class="line">		UClass*                                   (*ClassNoRegisterFunc)();</span><br><span class="line">		const char*                                 ClassConfigNameUTF8;</span><br><span class="line">		const FCppClassTypeInfoStatic*              CppClassInfo;</span><br><span class="line">		UObject*                           (*const *DependencySingletonFuncArray)();</span><br><span class="line">		const FClassFunctionLinkInfo*               FunctionLinkArray;</span><br><span class="line">		const FPropertyParamsBase* const*           PropertyArray;</span><br><span class="line">		const FImplementedInterfaceParams*          ImplementedInterfaceArray;</span><br><span class="line">		uint32                                      NumDependencySingletons : 4;</span><br><span class="line">		uint32                                      NumFunctions : 11;</span><br><span class="line">		uint32                                      NumProperties : 11;</span><br><span class="line">		uint32                                      NumImplementedInterfaces : 6;</span><br><span class="line">		uint32                                      ClassFlags; // EClassFlags</span><br><span class="line">#if WITH_METADATA</span><br><span class="line">		uint16                                      NumMetaData;</span><br><span class="line">		const FMetaDataPairParam*                   MetaDataArray;</span><br><span class="line">#endif</span><br><span class="line">	&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="3">
+<li><strong>DECLARE_CLASS</strong></li>
+</ol>
+<p>这是个非常非常重要的宏</p>
+<p>DECLARE_CLASS 定义在 ObjectMacros.h 中, 他定义了一些重载函数, 一些类的信息, 包括最最常用的 <strong>StaticClass()</strong></p>
+<p>然后, 现在我们明白了, StaticClass() 的原理就是: 调用 GetPrivateStaticClass() 构建一个装有这个类型信息的 UClass*, 然后返回</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">define DECLARE_CLASS( TClass, TSuperClass, TStaticFlags, TStaticCastFlags, TPackage, TRequiredAPI  ) \</span><br><span class="line">private: \</span><br><span class="line">    TClass&amp; operator=(TClass&amp;&amp;);   \</span><br><span class="line">    TClass&amp; operator=(const TClass&amp;);   \</span><br><span class="line">   TRequiredAPI static UClass* GetPrivateStaticClass(); \</span><br><span class="line">public: \</span><br><span class="line">   /** Bitwise union of #EClassFlags pertaining to this class.*/ \</span><br><span class="line">   static constexpr EClassFlags StaticClassFlags=EClassFlags(TStaticFlags); \</span><br><span class="line">   /** Typedef for the base class (&#123;&#123; typedef-type &#125;&#125;) */ \</span><br><span class="line">   typedef TSuperClass Super;\</span><br><span class="line">   /** Typedef for &#123;&#123; typedef-type &#125;&#125;. */ \</span><br><span class="line">   typedef TClass ThisClass;\</span><br><span class="line">   /** Returns a UClass object representing this class at runtime */ \</span><br><span class="line">   inline static UClass* StaticClass() \</span><br><span class="line">   &#123; \</span><br><span class="line">      return GetPrivateStaticClass(); \</span><br><span class="line">   &#125; \</span><br><span class="line">   /** Returns the package this class belongs in */ \</span><br><span class="line">   inline static const TCHAR* StaticPackage() \</span><br><span class="line">   &#123; \</span><br><span class="line">      return TPackage; \</span><br><span class="line">   &#125; \</span><br><span class="line">   /** Returns the static cast flags for this class */ \</span><br><span class="line">   inline static EClassCastFlags StaticClassCastFlags() \</span><br><span class="line">   &#123; \</span><br><span class="line">      return TStaticCastFlags; \</span><br><span class="line">   &#125; \</span><br><span class="line">   /** For internal use only; use StaticConstructObject() to create new objects. */ \</span><br><span class="line">   inline void* operator new(const size_t InSize, EInternal InInternalOnly, UObject* InOuter = (UObject*)GetTransientPackage(), FName InName = NAME_None, EObjectFlags InSetFlags = RF_NoFlags) \</span><br><span class="line">   &#123; \</span><br><span class="line">      return StaticAllocateObject(StaticClass(), InOuter, InName, InSetFlags); \</span><br><span class="line">   &#125; \</span><br><span class="line">   /** For internal use only; use StaticConstructObject() to create new objects. */ \</span><br><span class="line">   inline void* operator new( const size_t InSize, EInternal* InMem ) \</span><br><span class="line">   &#123; \</span><br><span class="line">      return (void*)InMem; \</span><br><span class="line">   &#125; \</span><br><span class="line">   /* Eliminate V1062 warning from PVS-Studio while keeping MSVC and Clang happy. */ \</span><br><span class="line">   inline void operator delete(void* InMem) \</span><br><span class="line">   &#123; \</span><br><span class="line">      ::operator delete(InMem); \</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>再看 FID_Documents_work_unrealProject_TestProj1_Source_TestProj1_AlxObject_h_15_ENHANCED_CONSTRUCTORS</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#define FID_Documents_work_unrealProject_TestProj1_Source_TestProj1_AlxObject_h_15_ENHANCED_CONSTRUCTORS \</span><br><span class="line">   /** Standard constructor, called after all reflected properties have been initialized */ \</span><br><span class="line">   NO_API UAlxObject(const FObjectInitializer&amp; ObjectInitializer = FObjectInitializer::Get()); \</span><br><span class="line">private: \</span><br><span class="line">   /** Private move- and copy-constructors, should never be used */ \</span><br><span class="line">   UAlxObject(UAlxObject&amp;&amp;); \</span><br><span class="line">   UAlxObject(const UAlxObject&amp;); \</span><br><span class="line">public: \</span><br><span class="line">   DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UAlxObject); \</span><br><span class="line">   DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UAlxObject); \</span><br><span class="line">   DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UAlxObject) \</span><br><span class="line">   NO_API virtual ~UAlxObject();</span><br></pre></td></tr></table></figure>
+
+
+
+<p>这个宏的话貌似就是声明了一些构造函数和析构函数</p>
+<p>后面还没看, 先这样 –&gt; 对戛然而止做解释</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/12/31/friend%20%E5%85%B3%E9%94%AE%E5%AD%97/" rel="prev" title="c++ friend 关键字">
+      <i class="fa fa-chevron-left"></i> c++ friend 关键字
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#UE-%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F-%E4%B8%80"><span class="nav-text">UE 类型系统 (一)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HUT-UBT"><span class="nav-text">HUT UBT</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="aolixin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">aolixin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/aolixin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;aolixin" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:2876589230@qq.com" title="E-Mail → mailto:2876589230@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aolixin</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">36k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">33 mins.</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

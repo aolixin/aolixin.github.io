@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="起因是公司是内网环境, 只支持访问国内的一些网站 为了科学上网, 公司给出了一个 chrome 的插件, 通过插件去配置浏览器代理 但是当我用 Epic Games 在线下载 UE 的时候, 速度实在感人, 问了公司 IT 同学, IT 那边说让我去申请公司海外 vpn, 这太麻烦了! 于是乎, 我选择了自己配置代理软件 我自己笔记本用的是 clash for windows 这个代理软件 我在公">
+<meta property="og:type" content="article">
+<meta property="og:title" content="clash 公司内网环境下, 配置代理">
+<meta property="og:url" content="http://example.com/2024/12/21/clash/index.html">
+<meta property="og:site_name" content="aolixin blog">
+<meta property="og:description" content="起因是公司是内网环境, 只支持访问国内的一些网站 为了科学上网, 公司给出了一个 chrome 的插件, 通过插件去配置浏览器代理 但是当我用 Epic Games 在线下载 UE 的时候, 速度实在感人, 问了公司 IT 同学, IT 那边说让我去申请公司海外 vpn, 这太麻烦了! 于是乎, 我选择了自己配置代理软件 我自己笔记本用的是 clash for windows 这个代理软件 我在公">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241221184908513.png">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241221185018730.png">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241221190002349.png">
+<meta property="article:published_time" content="2024-12-21T10:38:32.000Z">
+<meta property="article:modified_time" content="2024-12-21T11:45:47.749Z">
+<meta property="article:author" content="aolixin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241221184908513.png">
+
+<link rel="canonical" href="http://example.com/2024/12/21/clash/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>clash 公司内网环境下, 配置代理 | aolixin blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">aolixin blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/21/clash/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="aolixin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="aolixin blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          clash 公司内网环境下, 配置代理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-12-21 18:38:32 / Modified: 19:45:47" itemprop="dateCreated datePublished" datetime="2024-12-21T18:38:32+08:00">2024-12-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/others/" itemprop="url" rel="index"><span itemprop="name">others</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>689</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>起因是公司是内网环境, 只支持访问国内的一些网站</p>
+<p>为了科学上网, 公司给出了一个 chrome 的插件, 通过插件去配置浏览器代理</p>
+<p>但是当我用 Epic Games 在线下载 UE 的时候, 速度实在感人, 问了公司 IT 同学, IT 那边说让我去申请公司海外 vpn, 这太麻烦了!</p>
+<p>于是乎, 我选择了自己配置代理软件</p>
+<p>我自己笔记本用的是 clash for windows 这个代理软件</p>
+<p>我在公司电脑上配置好了之后, 成功解决全局代理的问题</p>
+<p>但是, 另一个问题发生了, 公司内网进不去了 !!!</p>
+<p>公司的 OA 系统, 包括一些 wiki, 都是在内网环境的 !!!, 为什么配置代理之后进不去了呢?</p>
+<p>于是我脑海中第一个解决办法是, 配置分流规则, 在访问公司内网的时候, 直接连接, 而不是走代理, 这个可以很方便的在 clash 内配置</p>
+<img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241221184908513.png" alt="image-20241221184908513" style="zoom: 50%;" />
+
+<img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241221185018730.png" alt="image-20241221185018730" style="zoom:50%;" />
+
+
+
+<p>也可以打开配置文件, 手动配置, 这里就不演示了</p>
+<p>但是当我配置完之后, 竟然没有用 !!!</p>
+<p>我很奇怪啊, 于是把 clash Proxies 切换成  Global, 还是进不去, why why why</p>
+<p>于是在前辈们的指导下, 我去查日志, 发现, 原来是 DNS 有问题 !</p>
+<p>公司是内网环境, 有自己的 DNS 服务器, 而 clash 有自己的 DNS 服务器, 这我的 IP 解析是失败的</p>
+<p>于是乎, 我查啊查, 发现, clash 有个 Mixin 功能, 可以在 clash DNS 基础上, 配置自己的 DNS 服务器</p>
+<p>所以解决方案如下</p>
+<ol>
+<li>在 “网络和 Internet” 下, 查看自己的 DNS 服务器地址</li>
+<li>配置到 clash Mixin 中 –&gt; <a target="_blank" rel="noopener" href="https://blog.csdn.net/YoungHong1992/article/details/133862017">https://blog.csdn.net/YoungHong1992/article/details/133862017</a></li>
+</ol>
+<img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image-20241221190002349.png" alt="image-20241221190002349" style="zoom: 50%;" />
+
+
+
+<p>最后最后, 我们成功地, 在保留外网访问能力的同时, 畅通的访问公司内网</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/12/17/hello-world/" rel="prev" title="Hello This is aolixin">
+      <i class="fa fa-chevron-left"></i> Hello This is aolixin
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/12/28/static%20%E5%92%8C%20extern/" rel="next" title="static 和 extern">
+      static 和 extern <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="aolixin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">aolixin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/aolixin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;aolixin" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:2876589230@qq.com" title="E-Mail → mailto:2876589230@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aolixin</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">36k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">33 mins.</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

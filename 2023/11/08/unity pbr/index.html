@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="-- 敖立鑫 前置知识unity shder 几种渲染模式  这里使用前向渲染管线 通过在 Tags中添加 “LightMode” &#x3D; “ForwardBase” 选择渲染模式 ForwrdBase  基础光照计算：漫反射，镜面反射，阴影计算等 考虑所有光源 计算平行光  ForwrdAdd  额外的光照效果：逐像素的操作 默认计算 前四个最重要的 点光源  这里我们只用一个平行光，暂时">
+<meta property="og:type" content="article">
+<meta property="og:title" content="unity 实现 PBR">
+<meta property="og:url" content="http://example.com/2023/11/08/unity%20pbr/index.html">
+<meta property="og:site_name" content="aolixin blog">
+<meta property="og:description" content="-- 敖立鑫 前置知识unity shder 几种渲染模式  这里使用前向渲染管线 通过在 Tags中添加 “LightMode” &#x3D; “ForwardBase” 选择渲染模式 ForwrdBase  基础光照计算：漫反射，镜面反射，阴影计算等 考虑所有光源 计算平行光  ForwrdAdd  额外的光照效果：逐像素的操作 默认计算 前四个最重要的 点光源  这里我们只用一个平行光，暂时">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081443441.png">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081444582.png">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081444026.png">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081444201.png">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081455852.png">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081444161.png">
+<meta property="og:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081444360.png">
+<meta property="article:published_time" content="2023-11-08T06:49:23.000Z">
+<meta property="article:modified_time" content="2024-12-21T11:46:16.668Z">
+<meta property="article:author" content="aolixin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081443441.png">
+
+<link rel="canonical" href="http://example.com/2023/11/08/unity%20pbr/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>unity 实现 PBR | aolixin blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">aolixin blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/11/08/unity%20pbr/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="aolixin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="aolixin blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          unity 实现 PBR
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-11-08 14:49:23" itemprop="dateCreated datePublished" datetime="2023-11-08T14:49:23+08:00">2023-11-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-21 19:46:16" itemprop="dateModified" datetime="2024-12-21T19:46:16+08:00">2024-12-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>1.5k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>-- 敖立鑫</p>
+<h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><p>unity shder 几种渲染模式 <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081443441.png" alt="img"> 这里使用前向渲染管线 通过在 Tags中添加 “LightMode” &#x3D; “ForwardBase” 选择渲染模式 ForwrdBase</p>
+<ul>
+<li>基础光照计算：漫反射，镜面反射，阴影计算等</li>
+<li>考虑所有光源</li>
+<li>计算平行光</li>
+</ul>
+<p>ForwrdAdd</p>
+<ul>
+<li>额外的光照效果：逐像素的操作</li>
+<li>默认计算 前四个最重要的 点光源</li>
+</ul>
+<p>这里我们只用一个平行光，暂时只用 ForwrdBase</p>
+<h2 id="搭建场景"><a href="#搭建场景" class="headerlink" title="搭建场景"></a>搭建场景</h2><p>首先新建一个场景，使用 hdrp 管线 替换 material <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081444582.png" alt="image-20231104213410160"></p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h3 id="先实现一个-blinn-phong-光照模型"><a href="#先实现一个-blinn-phong-光照模型" class="headerlink" title="先实现一个 blinn-phong 光照模型"></a>先实现一个 blinn-phong 光照模型</h3><p>因为我们要实现更好的效果，不考虑性能，所以我们的光照计算都将在 frag shader 进行 首先新建一个 unlitShader <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081444026.png" alt="image-20231105194100976"></p>
+<h3 id="添加-pbr"><a href="#添加-pbr" class="headerlink" title="添加 pbr"></a>添加 pbr</h3><h4 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h4><p>有多种 brdf 模型 我们这里主要实现 Cook-Torrance BRDF Cook-Torrance BRDF 分为漫反射和镜面反射两个部分 <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081444201.png" alt="image-20231106085634950"> 漫反射采用 lambertian 漫反射， <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081455852.png"> 镜面反射主要有三个函数 <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081444161.png" alt="image-20231106085839814"></p>
+<ul>
+<li><strong>D 法线分布函数</strong>：表示反射光强度在法线附件的分布，微平面向量和面法向越接近，强度越大。通过粗糙度改变波瓣形状<ul>
+<li>近似表示了微平面与半程向量的一致的比率</li>
+</ul>
+</li>
+<li><strong>G 几何函数</strong>：表示掠视时的几何遮蔽，通过史密斯法叠加入射和出射两个方向</li>
+<li><strong>F 菲涅尔方程</strong>：表示菲涅尔效应，掠视金属时反射较多的光而俯视时反射光较少</li>
+</ul>
+<h4 id="CG-实现"><a href="#CG-实现" class="headerlink" title="CG 实现"></a>CG 实现</h4><p>法线分布函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// 法线分布函数</span><br><span class="line">// 法线，半程向量，粗糙度</span><br><span class="line">float D_GGX_TR( fixed3 N, fixed3 H, float a)</span><br><span class="line">&#123;</span><br><span class="line">    float a2 = a * a;</span><br><span class="line">    float NdotH = max(dot(N,H),0);</span><br><span class="line">    float NdotH2 = NdotH * NdotH;</span><br><span class="line"></span><br><span class="line">    float nom = a2;</span><br><span class="line">    float denom = ( NdotH2 * (a2 - 1.0) + 1.0 );</span><br><span class="line">    denom = PI * denom * denom;</span><br><span class="line">    return nom / denom;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">// 几何方程</span><br><span class="line">float GeometrySchlickGGX(float NdotV, float roughness )</span><br><span class="line">&#123;</span><br><span class="line">    float r = (roughness + 1.0);</span><br><span class="line">    float k = (r*r) / 8.0;</span><br><span class="line"></span><br><span class="line">    float num   = NdotV;</span><br><span class="line">    float denom = NdotV * (1.0 - k) + k;</span><br><span class="line"></span><br><span class="line">    return num / denom;</span><br><span class="line">&#125;</span><br><span class="line">float GeometrySmith(fixed3 N, fixed3 V, fixed3 L, float roughness)</span><br><span class="line">&#123;</span><br><span class="line">    float NdotV = max(dot(N, V), 0.0);</span><br><span class="line">    float NdotL = max(dot(N, L), 0.0);</span><br><span class="line">    float ggx1 = GeometrySchlickGGX(NdotV, roughness);</span><br><span class="line">    float ggx2 = GeometrySchlickGGX(NdotL, roughness);</span><br><span class="line"></span><br><span class="line">    return ggx1 * ggx2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 菲涅尔方程</span><br><span class="line">// cosTheta -- Normal dot viewDir  F0 -- 表面颜色，反射率</span><br><span class="line">fixed3 fresnelSchlick(float cosTheta , fixed3 F0)</span><br><span class="line">&#123;</span><br><span class="line"> return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0) , 5.0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>效果不太好，以后有时间再优化 <img src="https://aolixin-typora-image.oss-cn-beijing.aliyuncs.com/image202311081444360.png" alt="image-20231108144102376"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/31766439">笔记九——渲染路径&amp;复杂光照 - 知乎 (zhihu.com)</a> <a target="_blank" rel="noopener" href="https://blog.csdn.net/u014078887/article/details/117308741">UnityShader-平行光和点光源的基础介绍和使用_unity_4lightposx0-CSDN博客</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/11/01/lua%20%E5%88%A4%E7%A9%BAbug/" rel="prev" title="xlua 和 unity 判空踩的坑">
+      <i class="fa fa-chevron-left"></i> xlua 和 unity 判空踩的坑
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/02/13/%E8%BD%AF%E6%B8%B2%E6%9F%93%E5%99%A8/" rel="next" title="c++ 软渲染器">
+      c++ 软渲染器 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="nav-text">前置知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%90%AD%E5%BB%BA%E5%9C%BA%E6%99%AF"><span class="nav-text">搭建场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0"><span class="nav-text">实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%88%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA-blinn-phong-%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B"><span class="nav-text">先实现一个 blinn-phong 光照模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0-pbr"><span class="nav-text">添加 pbr</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%90%86%E8%AE%BA"><span class="nav-text">理论</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CG-%E5%AE%9E%E7%8E%B0"><span class="nav-text">CG 实现</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="aolixin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">aolixin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/aolixin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;aolixin" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:2876589230@qq.com" title="E-Mail → mailto:2876589230@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aolixin</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">36k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">33 mins.</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
